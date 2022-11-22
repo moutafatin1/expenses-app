@@ -1,19 +1,17 @@
-import { useState } from "react";
-import { Sidebar } from "../../components/Sidebar/Sidebar";
+import type { ReactElement } from "react";
+import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
+import type { NextPageWithLayout } from "../_app";
 
-const DashboardPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeSidebar = () => {
-    setIsOpen(false);
-  };
-
+const DashboardPage: NextPageWithLayout = () => {
   return (
     <div>
-      <Sidebar closeSidebar={closeSidebar} isOpen={isOpen} />
-      <main className="ml-72">ccccc</main>
+      <h1>Home Dashboard</h1>
     </div>
   );
 };
 
 export default DashboardPage;
+
+DashboardPage.getLayout = (page: ReactElement) => {
+  return <SidebarLayout>{page}</SidebarLayout>;
+};
