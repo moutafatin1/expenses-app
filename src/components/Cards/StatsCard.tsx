@@ -15,7 +15,7 @@ type StatsCardProps = {
 
 export const StatsCard = ({ amount, title, icon, color }: StatsCardProps) => {
   return (
-    <div className="flex h-40 flex-1 flex-col justify-between rounded-lg bg-white p-8 shadow-lg">
+    <div className="flex  flex-1 flex-col justify-between rounded-lg bg-white p-8 shadow-lg">
       <div className="flex justify-between">
         <div className="flex flex-col">
           <span className="text-lg font-medium text-gray-600">{title}</span>
