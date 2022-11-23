@@ -1,4 +1,7 @@
 import type { ReactElement } from "react";
+import { GiExpense, GiTakeMyMoney } from "react-icons/gi";
+import { RiBankCardFill } from "react-icons/ri";
+import { StatsCard } from "../../components/Cards/StatsCard";
 import { LineChart } from "../../components/Charts/LineChart";
 import { PieChart } from "../../components/Charts/PieChart";
 import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
@@ -7,10 +10,25 @@ import type { NextPageWithLayout } from "../_app";
 const DashboardPage: NextPageWithLayout = () => {
   return (
     <div className="h-full  p-8">
-      <div className="grid  grid-cols-6  gap-4">
-        <div className="col-span-6 h-40  rounded-md bg-gray-300 md:col-span-3 lg:col-span-2"></div>
-        <div className="col-span-6 h-40  rounded-md bg-gray-300 md:col-span-3 lg:col-span-2"></div>
-        <div className="col-span-6 h-40  rounded-md bg-gray-300 md:col-span-3 lg:col-span-2"></div>
+      <div className="flex flex-wrap gap-4">
+        <StatsCard
+          title="Income"
+          amount={1445.55}
+          color="pink"
+          icon={<GiTakeMyMoney />}
+        />
+        <StatsCard
+          title="Expense"
+          amount={145.15}
+          color="green"
+          icon={<GiExpense />}
+        />
+        <StatsCard
+          title="Balance"
+          amount={5555.55}
+          color="blue"
+          icon={<RiBankCardFill />}
+        />
       </div>
       <div className="mt-12 flex flex-col items-center gap-4 lg:flex-row">
         <div className="h-96 w-full   lg:w-1/2">
