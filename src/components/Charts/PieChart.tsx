@@ -1,30 +1,16 @@
 import { ResponsivePie } from "@nivo/pie";
+import { trpc } from "../../utils/trpc";
 
-const data = [
-  {
-    id: "Travel",
-    label: "Travel",
-    value: 291,
-    color: "hsl(190, 70%, 50%)",
-  },
-  {
-    id: "Education",
-    label: "Education",
-    value: 291,
-    color: "hsl(150, 70%, 50%)",
-  },
-  {
-    id: "Family",
-    label: "Family",
-    value: 291,
-    color: "hsl(40, 70%, 50%)",
-  },
-];
 export const PieChart = () => {
+  const { data, isError, isLoading } =
+    trpc.transactions.getExpensesByCategory.useQuery();
+
+  if (isError) return <p>Error...</p>;
+  if (isLoading) return <p>Loading...</p>;
+
   return (
     <ResponsivePie
       data={data}
-      colors={{ datum: "data.color" }}
       margin={{ top: 30, right: 0, bottom: 30, left: 0 }}
       innerRadius={0.7}
       padAngle={1}
