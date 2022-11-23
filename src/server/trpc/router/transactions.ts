@@ -11,6 +11,7 @@ export const transactionsRouter = router({
             amount: true,
           },
           where: {
+            userId: ctx.session.user.id,
             type: "expense",
           },
         },
@@ -26,4 +27,70 @@ export const transactionsRouter = router({
 
     return totalExpensesByCategory;
   }),
+
+  getIncomeAndExpensesChartLineData: protectedProcedure.query(
+    async ({ ctx }) => {
+      const expenses = await ctx.prisma.transaction.findMany({
+        where: {
+          type: "expense",
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      const expenseData: LineChartData = {
+        id: "expense",
+        data: [],
+      };
+
+      expenses.map((e) => {
+        expenseData.data.push({
+          x: e.createdAt.toISOString().split("T")[0],
+          y: e.amount,
+        });
+      });
+
+      const incomes = await ctx.prisma.transaction.findMany({
+        where: {
+          type: "income",
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+
+      const incomeData: LineChartData = {
+        id: "income",
+        data: [],
+      };
+
+      incomes.map((e) => {
+        incomeData.data.push({
+          x: e.createdAt.toISOString().split("T")[0],
+          y: e.amount,
+        });
+      });
+
+      return [expenseData, incomeData];
+    }
+  ),
 });
+
+function selectWeek(date: Date) {
+  return Array(7)
+    .fill(new Date(date))
+    .map(
+      (el, idx) =>
+        new Date(el.setDate(el.getDate() - el.getDay() + idx))
+          .toISOString()
+          .split("T")[0]
+    );
+}
+
+type LineChartData = {
+  id: string;
+  data: Array<{
+    x?: string;
+    y: number;
+  }>;
+};

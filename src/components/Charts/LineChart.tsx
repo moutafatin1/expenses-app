@@ -1,116 +1,40 @@
 import { ResponsiveLine } from "@nivo/line";
+import { trpc } from "../../utils/trpc";
 
-const data = [
-  {
-    id: "japan",
-    color: "hsl(43, 70%, 50%)",
-    data: [
-      {
-        x: "plane",
-        y: 96,
-      },
-      {
-        x: "helicopter",
-        y: 48,
-      },
-      {
-        x: "boat",
-        y: 175,
-      },
-      {
-        x: "train",
-        y: 244,
-      },
-      {
-        x: "subway",
-        y: 111,
-      },
-      {
-        x: "bus",
-        y: 54,
-      },
-      {
-        x: "car",
-        y: 84,
-      },
-      {
-        x: "moto",
-        y: 233,
-      },
-      {
-        x: "bicycle",
-        y: 222,
-      },
-      {
-        x: "horse",
-        y: 247,
-      },
-      {
-        x: "skateboard",
-        y: 3,
-      },
-      {
-        x: "others",
-        y: 152,
-      },
-    ],
-  },
-  {
-    id: "france",
-    color: "hsl(46, 70%, 50%)",
-    data: [
-      {
-        x: "plane",
-        y: 109,
-      },
-      {
-        x: "helicopter",
-        y: 140,
-      },
-      {
-        x: "boat",
-        y: 65,
-      },
-      {
-        x: "train",
-        y: 161,
-      },
-      {
-        x: "subway",
-        y: 160,
-      },
-      {
-        x: "bus",
-        y: 31,
-      },
-      {
-        x: "car",
-        y: 126,
-      },
-      {
-        x: "moto",
-        y: 212,
-      },
-      {
-        x: "bicycle",
-        y: 179,
-      },
-      {
-        x: "horse",
-        y: 112,
-      },
-      {
-        x: "skateboard",
-        y: 93,
-      },
-      {
-        x: "others",
-        y: 104,
-      },
-    ],
-  },
-];
+// const data = [
+//   {
+//     id: "expense",
+//     color: "hsl(43, 70%, 50%)",
+//     data: [
+//       { x: "2018-01-04", y: 14 },
+//       { x: "2018-01-05", y: 14 },
+//       { x: "2018-01-06", y: 15 },
+//       { x: "2018-01-07", y: 11 },
+//       { x: "2018-01-08", y: 10 },
+//       { x: "2018-01-09", y: 12 },
+//       { x: "2018-01-22", y: 9 },
+//     ],
+//   },
+//   {
+//     id: "income",
+//     color: "hsl(46, 70%, 50%)",
+//     data: [
+//       { x: "2018-01-01", y: 7 },
+//       { x: "2018-01-02", y: 5 },
+//       { x: "2018-01-03", y: 11 },
+//       { x: "2018-01-04", y: 9 },
+//       { x: "2018-01-05", y: 12 },
+//       { x: "2018-01-06", y: 16 },
+//       { x: "2018-01-07", y: 13 },
+//     ],
+//   },
+// ];
 export const LineChart = () => {
+  const { data, isError, isLoading } =
+    trpc.transactions.getIncomeAndExpensesChartLineData.useQuery();
+
+  if (isError) return <p>Error...</p>;
+  if (isLoading) return <p>Loading...</p>;
   return (
     <ResponsiveLine
       data={data}
@@ -118,7 +42,13 @@ export const LineChart = () => {
       lineWidth={3}
       isInteractive={true}
       useMesh={true}
-      margin={{ top: 10, right: 10, bottom: 30, left: 60 }}
+      margin={{ top: 10, right: 100, bottom: 30, left: 60 }}
+      xScale={{
+        type: "time",
+        format: "%Y-%m-%d",
+        precision: "day",
+      }}
+      xFormat="time:%Y-%m-%d"
       axisLeft={{
         tickSize: 18,
         tickPadding: 7,
@@ -128,6 +58,7 @@ export const LineChart = () => {
         legendPosition: "middle",
       }}
       axisBottom={{
+        format: "%b %d",
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
@@ -135,6 +66,15 @@ export const LineChart = () => {
         legendOffset: 36,
         legendPosition: "middle",
       }}
+      legends={[
+        {
+          anchor: "top",
+          direction: "row",
+          itemHeight: 20,
+          itemWidth: 80,
+          translateY: -10,
+        },
+      ]}
     />
   );
 };
