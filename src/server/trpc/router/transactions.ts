@@ -16,7 +16,7 @@ export const transactionsRouter = router({
         },
       },
     });
-    const expensesByCategory = data.map((cat) => {
+    const totalExpensesByCategory = data.map((cat) => {
       return {
         id: cat.name,
         label: cat.name,
@@ -24,6 +24,6 @@ export const transactionsRouter = router({
       };
     });
 
-    return expensesByCategory;
+    return totalExpensesByCategory;
   }),
 });
