@@ -42,7 +42,7 @@ export const LineChart = () => {
       lineWidth={3}
       isInteractive={true}
       useMesh={true}
-      margin={{ top: 10, right: 100, bottom: 30, left: 60 }}
+      margin={{ top: 10, right: 20, bottom: 30, left: 60 }}
       xScale={{
         type: "time",
         format: "%Y-%m-%d",

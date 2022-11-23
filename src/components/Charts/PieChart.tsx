@@ -11,16 +11,16 @@ export const PieChart = () => {
   return (
     <ResponsivePie
       data={data}
-      margin={{ top: 30, right: 0, bottom: 30, left: 0 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       arcLinkLabel="label"
       innerRadius={0.7}
       legends={[
         {
-          anchor: "top-left",
-          direction: "column",
+          anchor: "bottom",
+          direction: "row",
           justify: false,
           translateX: 0,
-          translateY: 0,
+          translateY: 40,
           itemWidth: 100,
           itemHeight: 20,
           itemsSpacing: 0,
@@ -28,6 +28,9 @@ export const PieChart = () => {
           itemDirection: "left-to-right",
         },
       ]}
+      arcLabelsSkipAngle={45}
+      arcLinkLabelsDiagonalLength={10}
+      arcLinkLabelsStraightLength={1}
       padAngle={1}
       cornerRadius={20}
       isInteractive={true}
