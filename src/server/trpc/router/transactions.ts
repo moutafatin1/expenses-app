@@ -74,18 +74,21 @@ export const transactionsRouter = router({
       return [expenseData, incomeData];
     }
   ),
+  getLatestTransactions: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.transaction.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        category: true,
+      },
+      take: 5,
+    });
+  }),
 });
-
-function selectWeek(date: Date) {
-  return Array(7)
-    .fill(new Date(date))
-    .map(
-      (el, idx) =>
-        new Date(el.setDate(el.getDate() - el.getDay() + idx))
-          .toISOString()
-          .split("T")[0]
-    );
-}
 
 type LineChartData = {
   id: string;

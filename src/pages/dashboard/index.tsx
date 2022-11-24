@@ -10,27 +10,36 @@ import { trpc } from "../../utils/trpc";
 import type { NextPageWithLayout } from "../_app";
 
 const DashboardPage: NextPageWithLayout = () => {
-  const { data, isError, isLoading } = trpc.user.getStats.useQuery();
-  if (isLoading) return <p>loading...</p>;
-  if (isError) return <p>error...</p>;
+  const {
+    data: userStats,
+    isError: isErrorUserStats,
+    isLoading: loadingUserStats,
+  } = trpc.user.getStats.useQuery();
+  const {
+    data: transactions,
+    error: transactionsError,
+    isLoading: loadingTransactions,
+  } = trpc.transactions.getLatestTransactions.useQuery();
+  if (loadingUserStats) return <p>loading...</p>;
+  if (isErrorUserStats) return <p>error...</p>;
   return (
     <div className=" p-8">
       <div className="flex flex-wrap gap-4">
         <StatsCard
           title="Total Income"
-          amount={data.totalIncome}
+          amount={userStats.totalIncome}
           color="pink"
           icon={<GiTakeMyMoney />}
         />
         <StatsCard
           title="Total Expense"
-          amount={data.totalExpense}
+          amount={userStats.totalExpense}
           color="green"
           icon={<GiExpense />}
         />
         <StatsCard
           title="Balance"
-          amount={data.balance}
+          amount={userStats.balance}
           color="blue"
           icon={<RiBankCardFill />}
         />
@@ -46,29 +55,26 @@ const DashboardPage: NextPageWithLayout = () => {
       {/* Latest transactions */}
       <div className="mt-8 flex flex-col gap-4">
         <h2 className="pb-4 text-3xl font-bold text-gray-800">
-          Latest Transactions
+          Latest 5 Transactions
         </h2>
-        <TransactionDetailCard
-          name="Udemy Course"
-          amount={9.99}
-          categoryName="Education"
-          emoji="📚"
-          date={new Date().toLocaleDateString()}
-        />
-        <TransactionDetailCard
-          name="Udemy Course"
-          amount={9.99}
-          categoryName="Education"
-          emoji="📚"
-          date={new Date().toLocaleDateString()}
-        />
-        <TransactionDetailCard
-          name="Udemy Course"
-          amount={9.99}
-          categoryName="Education"
-          emoji="📚"
-          date={new Date().toLocaleDateString()}
-        />
+
+        {loadingTransactions && <p>Loading Latest transactions...</p>}
+        {transactionsError && (
+          <p>
+            Error Loading Latest transactions... {transactionsError.message}
+          </p>
+        )}
+        {transactions?.map((transaction) => (
+          <TransactionDetailCard
+            key={transaction.id}
+            type={transaction.type}
+            name={transaction.type}
+            amount={transaction.amount}
+            categoryName={transaction.category.name}
+            emoji={transaction.category.emoji}
+            date={transaction.createdAt.toLocaleDateString()}
+          />
+        ))}
       </div>
     </div>
   );
