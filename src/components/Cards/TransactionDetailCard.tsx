@@ -25,7 +25,9 @@ export const TransactionDetailCard = ({
           {/* <span className="text-sm text-gray-600">{categoryName}</span> */}
         </span>
         <div className="flex flex-col">
-          <span className="text-xl font-medium text-gray-700">{name}</span>
+          <span className="text-xl font-medium capitalize text-gray-700">
+            {name}
+          </span>
           <span className="text-gray-500">{date}</span>
         </div>
       </div>
