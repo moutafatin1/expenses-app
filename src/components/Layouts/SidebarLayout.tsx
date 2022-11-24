@@ -15,7 +15,7 @@ export const SidebarLayout = ({ children }: SidebarLayoutProps) => {
   return (
     <>
       <Sidebar closeSidebar={closeSidebar} isOpen={isOpen} />
-      <main className="h-screen bg-gray-100 md:pl-72">{children}</main>
+      <main className="bg-gray-100 md:pl-72">{children}</main>
     </>
   );
 };

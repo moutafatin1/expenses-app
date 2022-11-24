@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { GiExpense, GiTakeMyMoney } from "react-icons/gi";
 import { RiBankCardFill } from "react-icons/ri";
 import { StatsCard } from "../../components/Cards/StatsCard";
+import { TransactionDetailCard } from "../../components/Cards/TransactionDetailCard";
 import { LineChart } from "../../components/Charts/LineChart";
 import { PieChart } from "../../components/Charts/PieChart";
 import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
@@ -13,7 +14,7 @@ const DashboardPage: NextPageWithLayout = () => {
   if (isLoading) return <p>loading...</p>;
   if (isError) return <p>error...</p>;
   return (
-    <div className="h-full  p-8">
+    <div className=" p-8">
       <div className="flex flex-wrap gap-4">
         <StatsCard
           title="Total Income"
@@ -41,6 +42,33 @@ const DashboardPage: NextPageWithLayout = () => {
         <div className="h-96 w-full min-w-0 overflow-x-clip">
           <LineChart />
         </div>
+      </div>
+      {/* Latest transactions */}
+      <div className="mt-8 flex flex-col gap-4">
+        <h2 className="pb-4 text-3xl font-bold text-gray-800">
+          Latest Transactions
+        </h2>
+        <TransactionDetailCard
+          name="Udemy Course"
+          amount={9.99}
+          categoryName="Education"
+          emoji="📚"
+          date={new Date().toLocaleDateString()}
+        />
+        <TransactionDetailCard
+          name="Udemy Course"
+          amount={9.99}
+          categoryName="Education"
+          emoji="📚"
+          date={new Date().toLocaleDateString()}
+        />
+        <TransactionDetailCard
+          name="Udemy Course"
+          amount={9.99}
+          categoryName="Education"
+          emoji="📚"
+          date={new Date().toLocaleDateString()}
+        />
       </div>
     </div>
   );
