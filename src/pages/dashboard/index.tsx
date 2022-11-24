@@ -44,8 +44,8 @@ const DashboardPage: NextPageWithLayout = () => {
           icon={<RiBankCardFill />}
         />
       </div>
-      <div className="mt-12 flex flex-col items-center gap-4 lg:flex-row">
-        <div className="h-96 w-full  min-w-0 overflow-x-clip">
+      <div className="mt-12 flex flex-col items-center gap-4 overflow-x-clip lg:flex-row">
+        <div className="h-96 w-full  min-w-0 ">
           <LineChart />
         </div>
         <div className="h-96 w-full min-w-0  lg:w-1/2">
