@@ -30,10 +30,7 @@ export const transactionsRouter = router({
 
   getIncomeAndExpensesChartLineData: protectedProcedure.query(
     async ({ ctx }) => {
-      const expenses = await ctx.prisma.transaction.findMany({
-        where: {
-          type: "expense",
-        },
+      const transactions = await ctx.prisma.transaction.findMany({
         orderBy: {
           createdAt: "asc",
         },
@@ -42,33 +39,21 @@ export const transactionsRouter = router({
         id: "expense",
         data: [],
       };
-
-      expenses.map((e) => {
-        expenseData.data.push({
-          x: e.createdAt.toISOString().split("T")[0],
-          y: e.amount,
-        });
-      });
-
-      const incomes = await ctx.prisma.transaction.findMany({
-        where: {
-          type: "income",
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      });
-
       const incomeData: LineChartData = {
         id: "income",
         data: [],
       };
 
-      incomes.map((e) => {
-        incomeData.data.push({
-          x: e.createdAt.toISOString().split("T")[0],
-          y: e.amount,
-        });
+      transactions.map((t) => {
+        const newPoint: LineChartData["data"][0] = {
+          x: t.createdAt.toISOString().split("T")[0] ?? null,
+          y: t.amount,
+        };
+        if (t.type === "expense") {
+          expenseData.data.push(newPoint);
+        } else {
+          incomeData.data.push(newPoint);
+        }
       });
 
       return [expenseData, incomeData];
@@ -93,7 +78,7 @@ export const transactionsRouter = router({
 type LineChartData = {
   id: string;
   data: Array<{
-    x?: string;
+    x: string | null;
     y: number;
   }>;
 };
