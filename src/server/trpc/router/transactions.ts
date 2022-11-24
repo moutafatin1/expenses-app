@@ -34,6 +34,11 @@ export const transactionsRouter = router({
         orderBy: {
           createdAt: "asc",
         },
+        where: {
+          createdAt: {
+            gte: subtractWeeks(1),
+          },
+        },
       });
       const expenseData: LineChartData = {
         id: "expense",
@@ -55,7 +60,7 @@ export const transactionsRouter = router({
           incomeData.data.push(newPoint);
         }
       });
-
+      console.log(expenseData.data, incomeData.data);
       return [expenseData, incomeData];
     }
   ),
@@ -82,3 +87,8 @@ type LineChartData = {
     y: number;
   }>;
 };
+
+function subtractWeeks(numOfWeeks: number, date = new Date()) {
+  const lastWeek = date.setDate(date.getDate() - numOfWeeks * 7);
+  return new Date(lastWeek);
+}

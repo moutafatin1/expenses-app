@@ -45,11 +45,11 @@ const DashboardPage: NextPageWithLayout = () => {
         />
       </div>
       <div className="mt-12 flex flex-col items-center gap-4 lg:flex-row">
-        <div className="h-96 w-full   lg:w-1/2">
-          <PieChart />
-        </div>
-        <div className="h-96 w-full min-w-0 overflow-x-clip">
+        <div className="h-96 w-full  min-w-0 overflow-x-clip">
           <LineChart />
+        </div>
+        <div className="h-96 w-full min-w-0  lg:w-1/2">
+          <PieChart />
         </div>
       </div>
       {/* Latest transactions */}

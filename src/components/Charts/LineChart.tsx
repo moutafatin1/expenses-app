@@ -59,6 +59,7 @@ export const LineChart = () => {
       }}
       axisBottom={{
         format: "%b %d",
+        tickValues: "every day",
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,

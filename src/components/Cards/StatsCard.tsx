@@ -19,7 +19,9 @@ export const StatsCard = ({ amount, title, icon, color }: StatsCardProps) => {
       <div className="flex justify-between">
         <div className="flex flex-col">
           <span className="text-lg font-medium text-gray-600">{title}</span>
-          <span className="text-2xl font-bold text-gray-900">${amount}</span>
+          <span className="text-2xl font-bold text-gray-900">
+            ${amount.toFixed(2)}
+          </span>
         </div>
         <div
           className={fn(
