@@ -1,9 +1,16 @@
 import type { ReactElement } from "react";
+import Button from "../../components/Elements/Button/Button";
+import { InputField } from "../../components/Forms";
 import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
 import type { NextPageWithLayout } from "../_app";
 
 const CategoriesPage: NextPageWithLayout = () => {
-  return <div>CategoriesPage</div>;
+  return (
+    <div className="max-w-xs p-16">
+      <Button >Test</Button>
+      <InputField />
+    </div>
+  );
 };
 
 export default CategoriesPage;
