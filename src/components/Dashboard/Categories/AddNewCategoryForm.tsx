@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,39 +47,50 @@ export const AddNewCategoryForm = () => {
       <Button onClick={openForm} className="my-2 ml-auto">
         Add new Category
       </Button>
-      {addFormIsOpen && (
-        <form
-          onSubmit={onSubmit}
-          className="mx-auto flex w-full  max-w-md flex-col gap-4 rounded-lg bg-gray-200 p-4"
-        >
-          <InputField
-            label="Category Name"
-            errorMessage={errors?.categoryName?.message}
-            placeholder="Travel..."
-            {...register("categoryName")}
-          />
-          <InputField
-            label="Emoji"
-            errorMessage={errors?.emoji?.message}
-            placeholder="Pick an emoji"
-            {...register("emoji")}
-          />
-          <div className="flex items-center gap-4">
-            <Button type="submit" className="ml-auto w-28">
-              Add
-            </Button>
+      <Transition
+        as="div"
+        show={addFormIsOpen}
+        enter="ease-out duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="ease-in duration-300"
+        leaveFrom="opacity-100 h-64"
+        leaveTo="opacity-0 h-0"
+      >
+        {addFormIsOpen && (
+          <form
+            onSubmit={onSubmit}
+            className="mx-auto flex w-full  max-w-md flex-col gap-4 rounded-lg bg-gray-200 p-4"
+          >
+            <InputField
+              label="Category Name"
+              errorMessage={errors?.categoryName?.message}
+              placeholder="Travel..."
+              {...register("categoryName")}
+            />
+            <InputField
+              label="Emoji"
+              errorMessage={errors?.emoji?.message}
+              placeholder="Pick an emoji"
+              {...register("emoji")}
+            />
+            <div className="flex items-center gap-4">
+              <Button type="submit" className="ml-auto w-28">
+                Add
+              </Button>
 
-            <Button
-              onClick={closeForm}
-              type="button"
-              variant="outline"
-              className="w-28 border-red-400 text-red-400"
-            >
-              Cancel
-            </Button>
-          </div>
-        </form>
-      )}
+              <Button
+                onClick={closeForm}
+                type="button"
+                variant="outline"
+                className="w-28 border-red-400 text-red-400"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        )}
+      </Transition>
     </>
   );
 };
