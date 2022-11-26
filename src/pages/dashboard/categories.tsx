@@ -1,51 +1,62 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { ReactElement } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import Button from "../../components/Elements/Button/Button";
-import { InputField } from "../../components/Forms";
+import { HiPencil, HiTrash } from "react-icons/hi";
 import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
-import type { NextPageWithLayout } from "../_app";
 
-const categoryFormSchema = z.object({
-  name: z.string().min(5, "Category name must be at least 5 characters long"),
-  emoji: z
-    .string()
-    .min(2, "Emoji is required")
-    .max(2, "Only 1 emoji is required"),
-});
+const categories = [
+  {
+    emoji: "🏇",
+    name: "Activities",
+  },
+  // More people...
+];
 
-type FormData = z.infer<typeof categoryFormSchema>;
-
-const CategoriesPage: NextPageWithLayout = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(categoryFormSchema),
-  });
-  const onSubmit = handleSubmit((data) => {
-    console.log("🚀 ~ file: categories.tsx ~ line 19 ~ onSubmit ~ data", data);
-  });
+const CategoriesPage = () => {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="mx-auto  max-w-md rounded-lg bg-white p-8">
-        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-          <InputField
-            errorMessage={errors?.name?.message}
-            label="Name"
-            placeholder="Category name..."
-            {...register("name")}
-          />
-          <InputField
-            errorMessage={errors?.emoji?.message}
-            label="Emoji"
-            placeholder="Category emoji... 📽️"
-            {...register("emoji")}
-          />
-          <Button>Add new Category</Button>
-        </form>
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
+        <table className="min-w-full divide-y divide-gray-300 ">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="py-3.5 pl-5 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-8"
+              >
+                Emoji
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+              >
+                Name
+              </th>
+
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span className="sr-only">Edit</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {categories.map((category) => (
+              <tr key={category.name}>
+                <td className="w-full max-w-0 py-4 pl-4 pr-3 text-3xl font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6 sm:text-4xl">
+                  {category.emoji}
+                </td>
+                <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  {category.name}
+                </td>
+
+                <td className="flex  items-center justify-end gap-2 py-4 pl-3  pr-4 sm:pr-6">
+                  <button className="rounded-full bg-sky-400 p-2 text-xl text-white">
+                    <HiPencil />
+                  </button>
+                  <button className="rounded-full bg-red-400 p-2 text-xl text-white">
+                    <HiTrash />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
