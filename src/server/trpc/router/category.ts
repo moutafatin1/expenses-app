@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { newCategorySchema } from "../../../components/Dashboard/Categories/AddNewCategoryForm";
 import { protectedProcedure, router } from "../trpc";
 
@@ -13,6 +14,15 @@ export const categoryRouter = router({
           name,
           emoji,
           userId: ctx.session.user.id,
+        },
+      });
+    }),
+  deleteById: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.category.delete({
+        where: {
+          id: input,
         },
       });
     }),
