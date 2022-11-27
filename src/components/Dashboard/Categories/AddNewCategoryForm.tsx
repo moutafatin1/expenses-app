@@ -52,9 +52,9 @@ export const AddNewCategoryForm = ({
           reset({ categoryName: "", emoji: "" });
         },
       });
-    } else {
+    } else if (formMode?.mode === "update" && formMode.id) {
       updateCategoryMutation.mutate(
-        { ...data, id: formMode?.id },
+        { ...data, id: formMode.id },
         {
           onSuccess: () => {
             queryUtils.category.getCategories.invalidate();
