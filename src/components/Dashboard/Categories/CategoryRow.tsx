@@ -1,12 +1,16 @@
 import type { Category } from "@prisma/client";
+import type { Dispatch, SetStateAction } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
+import type { FormMode } from "../../../pages/dashboard/categories";
 import { trpc } from "../../../utils/trpc";
 
 type CategoryRowProps = {
   category: Category;
+  formMode?: FormMode;
+  setFormMode: Dispatch<SetStateAction<FormMode | undefined>>;
 };
 
-export const CategoryRow = ({ category }: CategoryRowProps) => {
+export const CategoryRow = ({ category, setFormMode }: CategoryRowProps) => {
   const utils = trpc.useContext();
   const categoryDeleteMutation = trpc.category.deleteById.useMutation();
   const deleteCategory = () => {
@@ -26,7 +30,10 @@ export const CategoryRow = ({ category }: CategoryRowProps) => {
       </td>
 
       <td className="flex  items-center justify-end gap-2 py-4 pl-3  pr-4 sm:pr-6">
-        <button className="rounded-full bg-sky-400 p-2 text-xl text-white transition-opacity hover:opacity-75">
+        <button
+          onClick={() => setFormMode({ mode: "update", id: category.id })}
+          className="rounded-full bg-sky-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
+        >
           <HiPencil />
         </button>
         <button

@@ -1,8 +1,10 @@
 import { Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import type { FormMode } from "../../../pages/dashboard/categories";
 import { trpc } from "../../../utils/trpc";
 import Button from "../../Elements/Button/Button";
 import { InputField } from "../../Forms";
@@ -14,9 +16,19 @@ export const newCategorySchema = z.object({
 
 type FormData = z.infer<typeof newCategorySchema>;
 
-export const AddNewCategoryForm = () => {
-  const [addFormIsOpen, setAddFormIsOpen] = useState(false);
+type AddNewCategoryFormProps = {
+  formMode?: FormMode;
+  setFormMode: Dispatch<SetStateAction<FormMode | undefined>>;
+};
+
+export const AddNewCategoryForm = ({
+  formMode,
+  setFormMode,
+}: AddNewCategoryFormProps) => {
   const queryUtils = trpc.useContext();
+  const { data: categoryToUpdate } = trpc.category.byId.useQuery(formMode?.id, {
+    enabled: formMode?.id !== undefined,
+  });
   const {
     register,
     handleSubmit,
@@ -24,23 +36,53 @@ export const AddNewCategoryForm = () => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(newCategorySchema),
+    defaultValues: {
+      categoryName: "",
+      emoji: "",
+    },
   });
   const addNewCategoryMutation = trpc.category.createNewCategory.useMutation();
+  const updateCategoryMutation = trpc.category.update.useMutation();
   const onSubmit = handleSubmit((data) => {
-    addNewCategoryMutation.mutate(data, {
-      onSuccess: () => {
-        queryUtils.category.getCategories.invalidate();
-        setAddFormIsOpen(false);
-        reset({ categoryName: "", emoji: "" });
-      },
-    });
+    if (formMode?.mode === "add") {
+      addNewCategoryMutation.mutate(data, {
+        onSuccess: () => {
+          queryUtils.category.getCategories.invalidate();
+          setFormMode(undefined);
+          reset({ categoryName: "", emoji: "" });
+        },
+      });
+    } else {
+      updateCategoryMutation.mutate(
+        { ...data, id: formMode?.id },
+        {
+          onSuccess: () => {
+            queryUtils.category.getCategories.invalidate();
+            setFormMode(undefined);
+            reset({ categoryName: "", emoji: "" });
+          },
+        }
+      );
+    }
   });
+  useEffect(() => {
+    if (categoryToUpdate) {
+      reset({
+        categoryName: categoryToUpdate?.name,
+        emoji: categoryToUpdate?.emoji,
+      });
+      return;
+    }
+    reset({ categoryName: "", emoji: "" });
+  }, [categoryToUpdate, reset]);
   const closeForm = () => {
-    setAddFormIsOpen(false);
+    setFormMode(undefined);
   };
   const openForm = () => {
-    setAddFormIsOpen(true);
+    setFormMode({ mode: "add" });
   };
+
+  const addFormMode = formMode?.mode === "add";
 
   return (
     <>
@@ -49,7 +91,7 @@ export const AddNewCategoryForm = () => {
       </Button>
       <Transition
         as="div"
-        show={addFormIsOpen}
+        show={formMode !== undefined}
         enter="ease-out duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -57,7 +99,7 @@ export const AddNewCategoryForm = () => {
         leaveFrom="opacity-100 h-64"
         leaveTo="opacity-0 h-0"
       >
-        {addFormIsOpen && (
+        {formMode && (
           <form
             onSubmit={onSubmit}
             className="mx-auto flex w-full  max-w-md flex-col gap-4 rounded-lg bg-gray-200 p-4"
@@ -76,7 +118,7 @@ export const AddNewCategoryForm = () => {
             />
             <div className="flex items-center gap-4">
               <Button type="submit" className="ml-auto w-28">
-                Add
+                {addFormMode ? "Add" : "Update"}
               </Button>
 
               <Button
