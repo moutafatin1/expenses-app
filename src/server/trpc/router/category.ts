@@ -1,5 +1,5 @@
+import { categoryFormSchema } from "@modules/Dashboard/Categories/categorySchema";
 import { z } from "zod";
-import { newCategorySchema } from "../../../modules/Dashboard/Categories/AddNewCategoryForm";
 import { protectedProcedure, router } from "../trpc";
 
 export const categoryRouter = router({
@@ -7,7 +7,7 @@ export const categoryRouter = router({
     return ctx.prisma.category.findMany();
   }),
   createNewCategory: protectedProcedure
-    .input(newCategorySchema)
+    .input(categoryFormSchema)
     .mutation(({ ctx, input: { categoryName: name, emoji } }) => {
       return ctx.prisma.category.create({
         data: {
