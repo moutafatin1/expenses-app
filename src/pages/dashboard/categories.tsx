@@ -1,8 +1,8 @@
+import { CategoriesList } from "@/src/components/Dashboard/Categories";
+import { AddNewCategoryForm } from "@/src/components/Dashboard/Categories/AddNewCategoryForm";
+import { SidebarLayout } from "@/src/components/Layouts/SidebarLayout";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import { CategoriesList } from "../../components/Dashboard/Categories";
-import { AddNewCategoryForm } from "../../components/Dashboard/Categories/AddNewCategoryForm";
-import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
 
 export type FormMode = {
   mode?: "add" | "update";
