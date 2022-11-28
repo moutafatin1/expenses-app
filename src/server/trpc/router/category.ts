@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { newCategorySchema } from "../../../components/Dashboard/Categories/AddNewCategoryForm";
+import { newCategorySchema } from "../../../modules/Dashboard/Categories/AddNewCategoryForm";
 import { protectedProcedure, router } from "../trpc";
 
 export const categoryRouter = router({

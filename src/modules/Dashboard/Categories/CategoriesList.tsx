@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
-import { FormMode } from "../../../pages/dashboard/categories";
-import { trpc } from "../../../utils/trpc";
+import type { Dispatch, SetStateAction } from "react";
+import type { FormMode } from "src/pages/dashboard/categories";
+import { trpc } from "src/utils/trpc";
 import { CategoryRow } from "./CategoryRow";
 
 type CategoryListProps = {
   formMode?: FormMode;
   setFormMode: Dispatch<SetStateAction<FormMode | undefined>>;
-}
+};
 
-export const CategoriesList = ({setFormMode}:CategoryListProps) => {
+export const CategoriesList = ({ setFormMode }: CategoryListProps) => {
   const {
     data: categories,
     error,
@@ -41,7 +41,11 @@ export const CategoriesList = ({setFormMode}:CategoryListProps) => {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {categories.map((category) => (
-            <CategoryRow setFormMode={setFormMode} key={category.id} category={category} />
+            <CategoryRow
+              setFormMode={setFormMode}
+              key={category.id}
+              category={category}
+            />
           ))}
         </tbody>
       </table>

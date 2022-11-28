@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 import React from "react";
-import { fn } from "../../../utils/fn";
+import { fn } from "../../../../../utils/fn";
 import { Spinner } from "../Spinner";
 
 const variants = {

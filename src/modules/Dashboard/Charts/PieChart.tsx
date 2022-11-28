@@ -1,5 +1,5 @@
 import { ResponsivePie } from "@nivo/pie";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "@utils/trpc";
 
 export const PieChart = () => {
   const { data, isError, isLoading } =

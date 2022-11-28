@@ -1,8 +1,8 @@
 import type { Category } from "@prisma/client";
 import type { Dispatch, SetStateAction } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
-import type { FormMode } from "../../../pages/dashboard/categories";
-import { trpc } from "../../../utils/trpc";
+import type { FormMode } from "src/pages/dashboard/categories";
+import { trpc } from "src/utils/trpc";
 
 type CategoryRowProps = {
   category: Category;

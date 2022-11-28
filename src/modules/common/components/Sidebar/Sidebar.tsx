@@ -1,10 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { fn } from "@utils/fn";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import React, { Fragment } from "react";
-import { fn } from "../../utils/fn";
-import { TransitionOpacity } from "../shared/TransitionOpacity";
+import { TransitionOpacity } from "../animations/TransitionOpacity";
 import { sidebarNavigation } from "./navigationData";
 
 type SidebarProps = {

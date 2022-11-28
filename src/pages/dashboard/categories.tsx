@@ -1,6 +1,6 @@
-import { CategoriesList } from "@/src/components/Dashboard/Categories";
-import { AddNewCategoryForm } from "@/src/components/Dashboard/Categories/AddNewCategoryForm";
-import { SidebarLayout } from "@/src/components/Layouts/SidebarLayout";
+import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
+import { CategoriesList } from "@modules/Dashboard/Categories";
+import { AddNewCategoryForm } from "@modules/Dashboard/Categories/AddNewCategoryForm";
 import type { ReactElement } from "react";
 import { useState } from "react";
 
@@ -11,10 +11,7 @@ export type FormMode = {
 
 const CategoriesPage = () => {
   const [formMode, setFormMode] = useState<FormMode>();
-  console.log(
-    "🚀 ~ file: categories.tsx ~ line 14 ~ CategoriesPage ~ formMode",
-    formMode
-  );
+
   const openAddForm = () => {
     setFormMode({ mode: "add" });
   };

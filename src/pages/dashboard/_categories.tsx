@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "@modules/common/components/Elements/Button/Button";
+import { InputField } from "@modules/common/components/Forms";
+import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
 import type { ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Button from "../../components/Elements/Button/Button";
-import { InputField } from "../../components/Forms";
-import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
 import type { NextPageWithLayout } from "../_app";
 
 const categoryFormSchema = z.object({

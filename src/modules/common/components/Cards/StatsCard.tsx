@@ -1,4 +1,4 @@
-import { fn } from "../../utils/fn";
+import { fn } from "@utils/fn";
 
 const iconBgColors = {
   pink: "bg-pink-500",

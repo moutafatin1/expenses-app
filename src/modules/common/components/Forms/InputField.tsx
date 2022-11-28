@@ -1,6 +1,6 @@
+import { fn } from "@utils/fn";
 import type { InputHTMLAttributes } from "react";
 import React from "react";
-import { fn } from "../../utils/fn";
 import { InputWrapper } from "./InputWrapper";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {

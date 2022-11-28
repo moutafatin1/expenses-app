@@ -1,13 +1,13 @@
+
 import { Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Dispatch, SetStateAction } from "react";
-import { useEffect } from "react";
+import Button from "@modules/common/components/Elements/Button/Button";
+import { InputField } from "@modules/common/components/Forms";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { FormMode } from "src/pages/dashboard/categories";
+import { trpc } from "src/utils/trpc";
 import { z } from "zod";
-import type { FormMode } from "../../../pages/dashboard/categories";
-import { trpc } from "../../../utils/trpc";
-import Button from "../../Elements/Button/Button";
-import { InputField } from "../../Forms";
 
 export const newCategorySchema = z.object({
   categoryName: z.string().min(1, "Category name is required"),

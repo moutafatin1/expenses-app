@@ -1,4 +1,4 @@
-import { fn } from "../../utils/fn";
+import { fn } from "@utils/fn";
 
 type TransactionDetailCardProps = {
   name: string;

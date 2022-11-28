@@ -1,12 +1,12 @@
+import { StatsCard } from "@modules/common/components/Cards/StatsCard";
+import { TransactionDetailCard } from "@modules/common/components/Cards/TransactionDetailCard";
+import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
+import { LineChart } from "@modules/Dashboard/Charts/LineChart";
+import { PieChart } from "@modules/Dashboard/Charts/PieChart";
+import { trpc } from "@utils/trpc";
 import type { ReactElement } from "react";
 import { GiExpense, GiTakeMyMoney } from "react-icons/gi";
 import { RiBankCardFill } from "react-icons/ri";
-import { StatsCard } from "../../components/Cards/StatsCard";
-import { TransactionDetailCard } from "../../components/Cards/TransactionDetailCard";
-import { LineChart } from "../../components/Charts/LineChart";
-import { PieChart } from "../../components/Charts/PieChart";
-import { SidebarLayout } from "../../components/Layouts/SidebarLayout";
-import { trpc } from "../../utils/trpc";
 import type { NextPageWithLayout } from "../_app";
 
 const DashboardPage: NextPageWithLayout = () => {
