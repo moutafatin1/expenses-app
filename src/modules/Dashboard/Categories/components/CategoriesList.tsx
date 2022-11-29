@@ -1,5 +1,6 @@
+import { Spinner } from "@modules/common/components/Elements";
 import { trpc } from "src/utils/trpc";
-import { CategoryRow } from "./components/CategoryRow";
+import { CategoryRow } from "./CategoryRow";
 
 export const CategoriesList = () => {
   const {
@@ -7,8 +8,9 @@ export const CategoriesList = () => {
     error,
     isLoading,
   } = trpc.category.getCategories.useQuery();
+  if (isLoading)
+    return <Spinner className="mx-auto text-7xl text-purple-500" />;
   if (error) return <p>{error.message}</p>;
-  if (isLoading) return <p>loading...</p>;
   return (
     <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
       <table className="min-w-full divide-y divide-gray-300 ">

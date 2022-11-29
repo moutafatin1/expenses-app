@@ -1,7 +1,9 @@
 import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
-import { CategoriesList } from "@modules/Dashboard/Categories";
-import { CategoryForm } from "@modules/Dashboard/Categories/CategoryForm";
-import { CategoryFormProvider } from "@modules/Dashboard/Categories/context";
+import {
+  CategoriesList,
+  CategoryForm,
+  CategoryFormProvider,
+} from "@modules/Dashboard/Categories";
 import type { ReactElement } from "react";
 
 const CategoriesPage = () => {
