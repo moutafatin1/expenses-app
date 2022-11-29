@@ -3,6 +3,7 @@ import { TransactionDetailCard } from "@modules/common/components/Cards/Transact
 import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
 import { LineChart } from "@modules/Dashboard/Charts/LineChart";
 import { PieChart } from "@modules/Dashboard/Charts/PieChart";
+import { LatestTransactions } from "@modules/Dashboard/Home/components/LatestTransactions";
 import { trpc } from "@utils/trpc";
 import type { ReactElement } from "react";
 import { GiExpense, GiTakeMyMoney } from "react-icons/gi";
@@ -15,11 +16,7 @@ const DashboardPage: NextPageWithLayout = () => {
     isError: isErrorUserStats,
     isLoading: loadingUserStats,
   } = trpc.user.getStats.useQuery();
-  const {
-    data: transactions,
-    error: transactionsError,
-    isLoading: loadingTransactions,
-  } = trpc.transactions.getLatestTransactions.useQuery();
+
   if (loadingUserStats) return <p>loading...</p>;
   if (isErrorUserStats) return <p>error...</p>;
   return (
@@ -30,18 +27,23 @@ const DashboardPage: NextPageWithLayout = () => {
           amount={userStats.totalIncome}
           color="pink"
           icon={<GiTakeMyMoney />}
+          isLoading={loadingUserStats}
         />
         <StatsCard
           title="Total Expense"
           amount={userStats.totalExpense}
           color="green"
           icon={<GiExpense />}
+          isLoading={loadingUserStats}
+
         />
         <StatsCard
           title="Balance"
           amount={userStats.balance}
           color="blue"
           icon={<RiBankCardFill />}
+          isLoading={loadingUserStats}
+
         />
       </div>
       <div className="mt-12 flex flex-col items-center gap-4 overflow-x-clip lg:flex-row">
@@ -53,29 +55,7 @@ const DashboardPage: NextPageWithLayout = () => {
         </div>
       </div>
       {/* Latest transactions */}
-      <div className="mt-8 flex flex-col gap-4">
-        <h2 className="pb-4 text-3xl font-bold text-gray-800">
-          Latest 5 Transactions
-        </h2>
-
-        {loadingTransactions && <p>Loading Latest transactions...</p>}
-        {transactionsError && (
-          <p>
-            Error Loading Latest transactions... {transactionsError.message}
-          </p>
-        )}
-        {transactions?.map((transaction) => (
-          <TransactionDetailCard
-            key={transaction.id}
-            type={transaction.type}
-            name={transaction.type}
-            amount={transaction.amount}
-            categoryName={transaction.category.name}
-            emoji={transaction.category.emoji}
-            date={transaction.createdAt.toLocaleDateString()}
-          />
-        ))}
-      </div>
+      <LatestTransactions/>
     </div>
   );
 };
