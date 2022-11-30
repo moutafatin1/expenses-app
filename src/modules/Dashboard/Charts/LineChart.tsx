@@ -14,14 +14,15 @@ export const LineChart = () => {
         delay={400}
         className="mx-auto text-7xl text-purple-500"
       />
-    );  return (
+    );
+  return (
     <ResponsiveLine
       data={data}
       curve="natural"
       lineWidth={3}
       isInteractive={true}
       useMesh={true}
-      margin={{ top: 10, right: 30, bottom: 30, left: 60 }}
+      margin={{ top: 10, right: 60, bottom: 30, left: 60 }}
       xScale={{
         type: "time",
         format: "%Y-%m-%d",
