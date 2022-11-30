@@ -9,7 +9,13 @@ export const CategoriesList = () => {
     isLoading,
   } = trpc.category.getCategories.useQuery();
   if (isLoading)
-    return <Spinner className="mx-auto text-7xl text-purple-500" />;
+    return (
+      <Spinner
+        show={isLoading}
+        delay={400}
+        className="mx-auto text-7xl text-purple-500"
+      />
+    );
   if (error) return <p>{error.message}</p>;
   return (
     <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
