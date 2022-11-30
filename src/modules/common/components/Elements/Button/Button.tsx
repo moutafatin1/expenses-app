@@ -5,7 +5,7 @@ import { Spinner } from "../Spinner";
 
 const variants = {
   primary: "bg-violet-500 text-white",
-  danger: "bg-red-500 text-white",
+  danger: "bg-red-400 text-white",
   outline: "bg-transparent border text-violet-500 border-violet-500",
 };
 
@@ -43,7 +43,9 @@ const Button = ({
       )}
       {...props}
     >
-      {isLoading && <Spinner className="animate-spin text-3xl" />}
+      {isLoading && (
+        <Spinner show={isLoading} className="animate-spin text-3xl" />
+      )}
       {!isLoading && startIcon && <span className="text-3xl">{startIcon}</span>}
       <span className="mx-2">{children}</span>
       {!isLoading && endIcon && <span className="text-3xl">{endIcon}</span>}
