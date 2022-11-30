@@ -6,6 +6,7 @@ import { Spinner } from "../Spinner";
 const variants = {
   primary: "bg-violet-500 text-white",
   danger: "bg-red-400 text-white",
+  info: "bg-blue-400 text-white",
   outline: "bg-transparent border text-violet-500 border-violet-500",
 };
 

@@ -14,19 +14,15 @@ const CategoriesPage = () => {
       <ConfirmationDialog
         icon="info"
         title="Delete Category"
-        body="Are you sure to delete ths category?"
+        body="Are you sure to delete this category?"
         triggerButton={(open: () => void) => (
           <Button onClick={open} variant="danger">
             Delete Category
           </Button>
         )}
         confirmButton={
-          <Button
-            variant="danger"
-            className="flex-1 whitespace-nowrap"
-            onClick={() => console.log("deleted")}
-          >
-            Delete Category
+          <Button variant="info" onClick={() => console.log("deleted")}>
+            Delete
           </Button>
         }
       />

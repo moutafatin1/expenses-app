@@ -1,3 +1,4 @@
+import { fn } from "@utils/fn";
 import { useCallback, useEffect, useState } from "react";
 import { HiExclamationCircle, HiInformationCircle } from "react-icons/hi";
 import Button from "../Elements/Button/Button";
@@ -45,13 +46,20 @@ export const ConfirmationDialog = ({
             <HiInformationCircle className="mx-auto text-7xl text-blue-400" />
           )}
 
-          <DialogTitle className="pb-2 text-2xl font-bold text-gray-700">
-            {title}
-          </DialogTitle>
-          <div className="flex items-center gap-4">
+          <div>
+            <DialogTitle className="pb-2 text-2xl font-bold text-gray-700">
+              {title}
+            </DialogTitle>
+            <p className="text-gray-600">{body}</p>
+          </div>
+          <div className="flex items-center justify-center gap-4">
             <Button
               onClick={close}
-              className="flex-1 border-red-400 text-red-400"
+              className={fn(
+                icon === "danger"
+                  ? "border-red-400 text-red-400"
+                  : "border-blue-400 text-blue-400"
+              )}
               variant="outline"
             >
               {cancelButtonText}
