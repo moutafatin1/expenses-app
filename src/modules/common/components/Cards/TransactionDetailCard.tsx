@@ -18,7 +18,7 @@ export const TransactionDetailCard = ({
   name,
 }: TransactionDetailCardProps) => {
   return (
-    <div className="flex items-center justify-between rounded-lg bg-gray-300/40 py-4 px-8">
+    <div className="flex items-center justify-between rounded-lg bg-gray-300/40 py-4 px-8 shadow-md">
       <div className="flex items-center gap-10">
         <span className="flex  flex-col items-center">
           <span className="text-3xl">{emoji}</span>
