@@ -1,5 +1,4 @@
 import { fn } from "@utils/fn";
-import { Spinner } from "../Elements";
 
 const iconBgColors = {
   pink: "bg-pink-500",
@@ -12,17 +11,9 @@ type StatsCardProps = {
   amount: number;
   icon: React.ReactNode;
   color: keyof typeof iconBgColors;
-  isLoading: boolean;
 };
 
-export const StatsCard = ({
-  amount,
-  title,
-  icon,
-  color,
-  isLoading,
-}: StatsCardProps) => {
-  if (isLoading) return <Spinner className="text-7xl text-purple-500" />;
+export const StatsCard = ({ amount, title, icon, color }: StatsCardProps) => {
   return (
     <div className="flex  flex-1 flex-col justify-between rounded-lg bg-white p-8 shadow-lg">
       <div className="flex justify-between">

@@ -1,3 +1,4 @@
+import { Spinner } from "@modules/common/components/Elements";
 import { ResponsiveLine } from "@nivo/line";
 import { trpc } from "@utils/trpc";
 
@@ -6,8 +7,14 @@ export const LineChart = () => {
     trpc.transactions.getIncomeAndExpensesChartLineData.useQuery();
 
   if (isError) return <p>Error...</p>;
-  if (isLoading) return <p>Loading...</p>;
-  return (
+  if (isLoading)
+    return (
+      <Spinner
+        show={isLoading}
+        delay={400}
+        className="mx-auto text-7xl text-purple-500"
+      />
+    );  return (
     <ResponsiveLine
       data={data}
       curve="natural"

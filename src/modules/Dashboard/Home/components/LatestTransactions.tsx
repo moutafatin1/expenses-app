@@ -3,14 +3,17 @@ import { Spinner } from "@modules/common/components/Elements";
 import { trpc } from "@utils/trpc";
 
 export const LatestTransactions = () => {
-  const {
-    data: transactions,
-    error,
-    isLoading,
-  } = trpc.transactions.getLatestTransactions.useQuery();
+  const { data: transactions, isLoading } =
+    trpc.transactions.getLatestTransactions.useQuery();
 
   if (isLoading)
-    return <Spinner className="mx-auto text-7xl text-purple-500" />;
+    return (
+      <Spinner
+        show={isLoading}
+        delay={400}
+        className="mx-auto text-7xl text-purple-500"
+      />
+    );
   return (
     <div className="mt-8 flex flex-col gap-4">
       <h2 className="pb-4 text-3xl font-bold text-gray-800">

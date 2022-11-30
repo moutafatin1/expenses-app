@@ -1,3 +1,4 @@
+import { Spinner } from "@modules/common/components/Elements";
 import { ResponsivePie } from "@nivo/pie";
 import { trpc } from "@utils/trpc";
 
@@ -6,7 +7,14 @@ export const PieChart = () => {
     trpc.transactions.getExpensesByCategory.useQuery();
 
   if (isError) return <p>Error...</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <Spinner
+        show={isLoading}
+        delay={400}
+        className="mx-auto text-7xl text-purple-500"
+      />
+    );
 
   return (
     <ResponsivePie
