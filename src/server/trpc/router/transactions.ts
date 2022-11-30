@@ -34,12 +34,16 @@ export const transactionsRouter = router({
         orderBy: {
           createdAt: "asc",
         },
-        where: {
-          createdAt: {
-            gte: subtractWeeks(1),
-          },
-        },
+        // where: {
+        //   createdAt: {
+        //     gte: subtractWeeks(1),
+        //   },
+        // },
       });
+      console.log(
+        "🚀 ~ file: transactions.ts:43 ~ transactions",
+        transactions.length
+      );
       const expenseData: LineChartData = {
         id: "expense",
         data: [],
