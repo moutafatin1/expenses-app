@@ -1,9 +1,7 @@
-import { ConfirmationDialog } from "@modules/common/components/ConfirmationDialog/ConfirmationDialog";
-import Button from "@modules/common/components/Elements/Button/Button";
 import type { Category } from "@prisma/client";
-import { HiPencil, HiTrash } from "react-icons/hi";
-import { trpc } from "src/utils/trpc";
+import { HiPencil } from "react-icons/hi";
 import { useCategoryFormContext } from "../context";
+import { DeleteCategory } from "./DeleteCategory";
 
 type CategoryRowProps = {
   category: Category;
@@ -11,15 +9,7 @@ type CategoryRowProps = {
 
 export const CategoryRow = ({ category }: CategoryRowProps) => {
   const { openUpdateForm } = useCategoryFormContext();
-  const utils = trpc.useContext();
-  const categoryDeleteMutation = trpc.category.deleteById.useMutation();
-  const deleteCategory = () => {
-    categoryDeleteMutation.mutate(category.id, {
-      onSuccess: () => {
-        utils.category.getCategories.invalidate();
-      },
-    });
-  };
+
   return (
     <tr key={category.id}>
       <td className="w-full max-w-0 py-4 pl-4 pr-3 text-3xl font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6 sm:text-4xl">
@@ -36,25 +26,7 @@ export const CategoryRow = ({ category }: CategoryRowProps) => {
         >
           <HiPencil />
         </button>
-        <ConfirmationDialog
-          isDone={categoryDeleteMutation.isSuccess}
-          icon="info"
-          title="Are you sure to delete this category?"
-          body="Deleting this category will delete all the transactions associated with it."
-          triggerButton={(open: () => void) => (
-            <button
-              onClick={open}
-              className="rounded-full bg-red-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
-            >
-              <HiTrash />
-            </button>
-          )}
-          confirmButton={
-            <Button variant="info" onClick={deleteCategory}>
-              Delete
-            </Button>
-          }
-        />
+        <DeleteCategory id={category.id} />
       </td>
     </tr>
   );

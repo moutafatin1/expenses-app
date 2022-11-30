@@ -20,6 +20,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   isLoading?: boolean;
+  modifier? : "plain" | "outline";
   size?: keyof typeof sizes;
   variant?: keyof typeof variants;
 };
