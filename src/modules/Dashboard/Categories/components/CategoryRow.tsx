@@ -1,3 +1,5 @@
+import { ConfirmationDialog } from "@modules/common/components/ConfirmationDialog/ConfirmationDialog";
+import Button from "@modules/common/components/Elements/Button/Button";
 import type { Category } from "@prisma/client";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { trpc } from "src/utils/trpc";
@@ -34,12 +36,25 @@ export const CategoryRow = ({ category }: CategoryRowProps) => {
         >
           <HiPencil />
         </button>
-        <button
-          onClick={deleteCategory}
-          className="rounded-full bg-red-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
-        >
-          <HiTrash />
-        </button>
+        <ConfirmationDialog
+          isDone={categoryDeleteMutation.isSuccess}
+          icon="info"
+          title="Are you sure to delete this category?"
+          body="Deleting this category will delete all the transactions associated with it."
+          triggerButton={(open: () => void) => (
+            <button
+              onClick={open}
+              className="rounded-full bg-red-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
+            >
+              <HiTrash />
+            </button>
+          )}
+          confirmButton={
+            <Button variant="info" onClick={deleteCategory}>
+              Delete
+            </Button>
+          }
+        />
       </td>
     </tr>
   );
