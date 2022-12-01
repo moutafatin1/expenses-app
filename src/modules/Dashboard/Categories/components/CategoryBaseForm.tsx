@@ -6,18 +6,21 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { categoryFormData } from "../categorySchema";
 import { categoryFormSchema } from "../categorySchema";
-import { useCategoryFormContext } from "../context";
 
 type CategoryBaseFormProps = {
   onSubmit: SubmitHandler<categoryFormData>;
   defaultValues?: Partial<categoryFormData>;
+  mode: "add" | "update";
+  closeDialog: () => void;
 };
 
 export const CategoryBaseForm = ({
   onSubmit,
   defaultValues,
+  mode,
+  closeDialog,
 }: CategoryBaseFormProps) => {
-  const { isAddMode, closeForm } = useCategoryFormContext();
+  // const { isAddMode, closeForm } = useCategoryFormContext();
   const {
     register,
     handleSubmit,
@@ -32,10 +35,7 @@ export const CategoryBaseForm = ({
     reset(defaultValues);
   }, [reset, defaultValues]);
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto flex w-full  max-w-md flex-col gap-4 rounded-lg bg-gray-200 p-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className=" flex  flex-col gap-4">
       <InputField
         label="Category Name"
         errorMessage={errors?.categoryName?.message}
@@ -50,14 +50,14 @@ export const CategoryBaseForm = ({
       />
       <div className="flex items-center gap-4">
         <Button type="submit" className="ml-auto w-28">
-          {isAddMode ? "Add" : "Update"}
+          {mode === "add" ? "Add" : "Update"}
         </Button>
 
         <Button
-          onClick={closeForm}
+          onClick={closeDialog}
           type="button"
           variant="outline"
-          className="w-28 border-red-400 text-red-400"
+          className="w-28 "
         >
           Cancel
         </Button>

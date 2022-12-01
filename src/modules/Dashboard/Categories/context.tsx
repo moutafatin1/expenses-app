@@ -1,52 +1,42 @@
+import type { Category } from "@prisma/client";
 import { createContext, useContext, useState } from "react";
 
-export type FormMode = {
-  mode?: "add" | "update";
-  id?: string;
+type UpdateCategoryDialog = {
+  close: () => void;
+  openUpdateDialog: (category: Category) => void;
+  isOpen: boolean;
+  category?: Category;
 };
 
-type CategoryFormContextType = {
-  closeForm: () => void;
-  openAddForm: () => void;
-  openUpdateForm: (id: string) => void;
-  isAddMode: boolean;
-  isUpdateMode: boolean;
-  categoryId? : string
-};
+export const CategoryFormContext = createContext<UpdateCategoryDialog | null>(
+  null
+);
 
-export const CategoryFormContext =
-  createContext<CategoryFormContextType | null>(null);
-
-type CategoryFormProviderProps = {
+type UpdateCategoryDialogProviderProps = {
   children: React.ReactNode;
 };
 
-export const CategoryFormProvider = ({
+export const UpdateCategoryDialogProvider = ({
   children,
-}: CategoryFormProviderProps) => {
-  const [formMode, setFormMode] = useState<FormMode>();
-  const closeForm = () => {
-    setFormMode(undefined);
+}: UpdateCategoryDialogProviderProps) => {
+  const [category, setCategory] = useState<Category>();
+  const close = () => {
+    setCategory(undefined);
   };
-  const openAddForm = () => {
-    setFormMode({ mode: "add" });
+
+  const openUpdateDialog = (category: Category) => {
+    setCategory(category);
   };
-  const openUpdateForm = (id: string) => {
-    setFormMode({ mode: "update", id });
-  };
-  const isAddMode = formMode?.mode === "add";
-  const isUpdateMode = formMode?.mode === "update";
-  const categoryId = formMode?.id
+
+  const isOpen = category !== undefined;
 
   return (
     <CategoryFormContext.Provider
       value={{
-        closeForm,
-        openAddForm,
-        openUpdateForm,
-        isAddMode,
-        isUpdateMode,
-        categoryId
+        close,
+        isOpen,
+        openUpdateDialog,
+        category,
       }}
     >
       {children}
@@ -54,7 +44,7 @@ export const CategoryFormProvider = ({
   );
 };
 
-export const useCategoryFormContext = () => {
+export const useUpdateCategory = () => {
   const context = useContext(CategoryFormContext);
   if (context !== null) return context;
   throw new Error("context must not be null");

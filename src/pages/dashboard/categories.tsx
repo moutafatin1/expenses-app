@@ -1,21 +1,20 @@
-import { ConfirmationDialog } from "@modules/common/components/ConfirmationDialog/ConfirmationDialog";
-import Button from "@modules/common/components/Elements/Button/Button";
 import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
 import {
   CategoriesList,
-  CategoryForm,
-  CategoryFormProvider,
+  UpdateCategoryDialogProvider,
 } from "@modules/Dashboard/Categories";
+import { AddNewFormDialog } from "@modules/Dashboard/Categories/components/AddNewFormDialog";
+import { UpdateFormDialog } from "@modules/Dashboard/Categories/components/UpdateFormDialog";
 import type { ReactElement } from "react";
 
 const CategoriesPage = () => {
   return (
     <div className="mt-24 flex flex-col justify-end px-4 sm:px-6 lg:px-8">
-      
-      <CategoryFormProvider>
-        <CategoryForm />
+      <AddNewFormDialog />
+      <UpdateCategoryDialogProvider>
+        <UpdateFormDialog />
         <CategoriesList />
-      </CategoryFormProvider>
+      </UpdateCategoryDialogProvider>
     </div>
   );
 };

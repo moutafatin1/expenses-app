@@ -1,6 +1,6 @@
 import type { Category } from "@prisma/client";
 import { HiPencil } from "react-icons/hi";
-import { useCategoryFormContext } from "../context";
+import { useUpdateCategory } from "../context";
 import { DeleteCategory } from "./DeleteCategory";
 
 type CategoryRowProps = {
@@ -8,7 +8,7 @@ type CategoryRowProps = {
 };
 
 export const CategoryRow = ({ category }: CategoryRowProps) => {
-  const { openUpdateForm } = useCategoryFormContext();
+  const { openUpdateDialog } = useUpdateCategory();
 
   return (
     <tr key={category.id}>
@@ -21,7 +21,7 @@ export const CategoryRow = ({ category }: CategoryRowProps) => {
 
       <td className="flex  items-center justify-end gap-2 py-4 pl-3  pr-4 sm:pr-6">
         <button
-          onClick={() => openUpdateForm(category.id)}
+          onClick={() => openUpdateDialog(category)}
           className="rounded-full bg-sky-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
         >
           <HiPencil />
