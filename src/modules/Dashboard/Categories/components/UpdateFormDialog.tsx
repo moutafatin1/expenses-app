@@ -3,18 +3,24 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@modules/common/components/Elements/Dialog/Dialog";
+import type { Category } from "@prisma/client";
 import { trpc } from "@utils/trpc";
 import type { SubmitHandler } from "react-hook-form";
 import type { categoryFormData } from "../categorySchema";
-import { useUpdateCategory } from "../context";
 import { CategoryBaseForm } from "./CategoryBaseForm";
 
-// type UpdateCategoryFormProps = {};
+type UpdateCategoryFormProps = {
+  close: () => void;
+  category?: Category;
+  isOpen: boolean;
+};
 
-export const UpdateFormDialog = () => {
-  const { close, isOpen, category } = useUpdateCategory();
+export const UpdateFormDialog = ({
+  category,
+  isOpen,
+  close,
+}: UpdateCategoryFormProps) => {
   const utils = trpc.useContext();
-  // const { data: categoryToUpdate } = trpc.category.byId.useQuery(categoryId);
   const updateCategoryMutation = trpc.category.update.useMutation();
   const onSubmit: SubmitHandler<categoryFormData> = (data) => {
     if (category === undefined) return;

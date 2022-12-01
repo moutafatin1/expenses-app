@@ -1,14 +1,17 @@
 import type { Category } from "@prisma/client";
 import { HiPencil } from "react-icons/hi";
-import { useUpdateCategory } from "../context";
 import { DeleteCategory } from "./DeleteCategory";
 
 type CategoryRowProps = {
   category: Category;
+  openUpdateDialog: (category: Category) => void;
 };
 
-export const CategoryRow = ({ category }: CategoryRowProps) => {
-  const { openUpdateDialog } = useUpdateCategory();
+export const CategoryRow = ({
+  category,
+  openUpdateDialog,
+}: CategoryRowProps) => {
+  // const { openUpdateDialog } = useUpdateCategory();
 
   return (
     <tr key={category.id}>

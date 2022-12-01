@@ -1,8 +1,14 @@
 import { Spinner } from "@modules/common/components/Elements";
+import type { Category } from "@prisma/client";
 import { trpc } from "src/utils/trpc";
 import { CategoryRow } from "./CategoryRow";
 
-export const CategoriesList = () => {
+
+type CategoriesListProps = {
+  openUpdateDialog: (category: Category) => void;
+};
+
+export const CategoriesList = ({openUpdateDialog}:CategoriesListProps) => {
   const {
     data: categories,
     error,
@@ -30,7 +36,7 @@ export const CategoriesList = () => {
             </th>
             <th
               scope="col"
-              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 "
             >
               Name
             </th>
@@ -42,7 +48,7 @@ export const CategoriesList = () => {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {categories.map((category) => (
-            <CategoryRow key={category.id} category={category} />
+            <CategoryRow openUpdateDialog={openUpdateDialog} key={category.id} category={category} />
           ))}
         </tbody>
       </table>
