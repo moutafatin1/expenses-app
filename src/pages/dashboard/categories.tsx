@@ -2,20 +2,17 @@ import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
 import { CategoriesList } from "@modules/Dashboard/Categories";
 import { AddNewFormDialog } from "@modules/Dashboard/Categories/components/AddNewFormDialog";
 import { UpdateFormDialog } from "@modules/Dashboard/Categories/components/UpdateFormDialog";
-import type { Category } from "@prisma/client";
+import { useUpdateCategory } from "@modules/Dashboard/Categories/hooks/useUpdateCategory";
 import type { ReactElement } from "react";
-import { useState } from "react";
 
 const CategoriesPage = () => {
-  const [categoryToUpdate, setCategoryToUpdate] = useState<Category>();
-  const closeUpdateDialog = () => {
-    setCategoryToUpdate(undefined);
-  };
-  const openUpdateDialog = (category: Category) => {
-    setCategoryToUpdate(category);
-  };
+  const {
+    categoryToUpdate,
+    closeUpdateDialog,
+    openUpdateDialog,
+    updateDialogIsOpen,
+  } = useUpdateCategory();
 
-  const updateDialogIsOpen = categoryToUpdate !== undefined;
   return (
     <div className="mt-24 flex flex-col justify-end px-4 sm:px-6 lg:px-8">
       <AddNewFormDialog />
