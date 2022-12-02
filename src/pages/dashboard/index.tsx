@@ -8,7 +8,7 @@ import type { NextPageWithLayout } from "../_app";
 
 const DashboardPage: NextPageWithLayout = () => {
   return (
-    <div className=" p-8">
+    <div className="p-8">
       <UserStats />
       <div className="mt-12 flex flex-col items-center gap-4 overflow-x-clip lg:flex-row">
         <div className="h-96 w-full  min-w-0">

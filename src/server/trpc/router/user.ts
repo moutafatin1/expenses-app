@@ -26,6 +26,24 @@ export const userRouter = router({
     const totalExpense = expenseAggregation._sum.amount ?? 0;
     const balance = totalIncome - totalExpense;
 
-    return { totalExpense, totalIncome, balance };
+    const stats = [
+      {
+        title: "Total Expense",
+        amount: totalExpense,
+        type: "expense",
+      },
+      {
+        title: "Total Income",
+        amount: totalIncome,
+        type: "income",
+      },
+      {
+        title: "Balance",
+        amount: totalIncome,
+        type: "balance",
+      },
+    ];
+
+    return stats;
   }),
 });

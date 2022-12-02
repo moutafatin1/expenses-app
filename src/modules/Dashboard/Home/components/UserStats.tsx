@@ -1,8 +1,7 @@
+import type { StatsCardType } from "@modules/common/components/Cards/StatsCard";
 import { StatsCard } from "@modules/common/components/Cards/StatsCard";
 import { Spinner } from "@modules/common/components/Elements";
 import { trpc } from "@utils/trpc";
-import { GiExpense, GiTakeMyMoney } from "react-icons/gi";
-import { RiBankCardFill } from "react-icons/ri";
 
 export const UserStats = () => {
   const { data, isError, isLoading } = trpc.user.getStats.useQuery();
@@ -18,24 +17,14 @@ export const UserStats = () => {
     );
   return (
     <div className="flex flex-wrap gap-4">
-      <StatsCard
-        title="Total Income"
-        amount={data.totalIncome}
-        color="pink"
-        icon={<GiTakeMyMoney />}
-      />
-      <StatsCard
-        title="Total Expense"
-        amount={data.totalExpense}
-        color="green"
-        icon={<GiExpense />}
-      />
-      <StatsCard
-        title="Balance"
-        amount={data.balance}
-        color="blue"
-        icon={<RiBankCardFill />}
-      />
+      {data.map((stat) => (
+        <StatsCard
+          key={stat.type}
+          title={stat.title}
+          amount={stat.amount}
+          variant={stat.type as StatsCardType}
+        />
+      ))}
     </div>
   );
 };
