@@ -1,4 +1,5 @@
 import { Spinner } from "@modules/common/components/Elements";
+import { Pagination } from "@modules/common/components/Pagination/Pagination";
 import type { Category } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { trpc } from "src/utils/trpc";
@@ -8,6 +9,20 @@ type CategoriesListProps = {
   openUpdateDialog: (category: Category) => void;
 };
 
+export const getPaginationMetadata = ({
+  limit,
+  total,
+  page,
+}: {
+  limit: number;
+  total: number;
+  page: number;
+}) => {
+  const startIndex = (page - 1) * limit + 1;
+  const endIndex = Math.min(page * limit, total);
+  return { startIndex, endIndex };
+};
+
 export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   const [page, setPage] = useState(1);
   const utils = trpc.useContext();
@@ -15,6 +30,7 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
     { page: page },
     { keepPreviousData: true, staleTime: 5000 }
   );
+  // prefetch next page
   useEffect(() => {
     if (!isPreviousData && data?.hasMore) {
       utils.category.all.prefetch({ page: page + 1 });
@@ -29,8 +45,18 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
       />
     );
   if (error) return <p>{error.message}</p>;
-  const start = (page - 1) * data.size + 1;
-  const end = Math.min(page * data.size, data.totalRowCount);
+
+  const { endIndex, startIndex } = getPaginationMetadata({
+    page,
+    limit: data.size,
+    total: data.totalRowCount,
+  });
+  const setNextPage = () => {
+    setPage((old) => (data.hasMore ? old + 1 : old));
+  };
+  const setPreviousPage = () => {
+    setPage((old) => Math.max(old - 1, 1));
+  };
 
   return (
     <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
@@ -65,38 +91,17 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
           ))}
         </tbody>
       </table>
-      <nav
-        className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-        aria-label="Pagination"
-      >
-        <div className="hidden sm:block">
-          <p className="text-sm text-gray-700">
-            Showing
-            <span className="mx-1 font-medium">{start}</span>
-            to
-            <span className="mx-1 font-medium">{end}</span>
-            of
-            <span className="mx-1 font-medium">{data.totalRowCount}</span>
-            results
-          </p>
-        </div>
-        <div className="flex flex-1 justify-between sm:justify-end">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage((old) => Math.max(old - 1, 1))}
-            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:hover:bg-inherit"
-          >
-            Previous
-          </button>
-          <button
-            disabled={!data.hasMore}
-            onClick={() => setPage((old) => old + 1)}
-            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:hover:bg-inherit"
-          >
-            Next
-          </button>
-        </div>
-      </nav>
+      <Pagination
+        isPrevious={page !== 1}
+        isNext={data.hasMore}
+        metaData={{
+          endIndex,
+          startIndex,
+          total: data.totalRowCount,
+        }}
+        nextPage={setNextPage}
+        previousPage={setPreviousPage}
+      />
     </div>
   );
 };
