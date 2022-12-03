@@ -3,9 +3,22 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
 export const categoryRouter = router({
-  all: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.category.findMany();
-  }),
+  all: protectedProcedure
+    .input(
+      z
+        .object({
+          page: z.number().optional(),
+        })
+        .optional()
+    )
+    .query(({ ctx, input }) => {
+      const size = 5;
+      const page = input?.page ?? 1;
+      return ctx.prisma.category.findMany({
+        take: size,
+        skip: (page - 1) * size,
+      });
+    }),
   new: protectedProcedure
     .input(categoryFormSchema)
     .mutation(({ ctx, input: { categoryName: name, emoji } }) => {
