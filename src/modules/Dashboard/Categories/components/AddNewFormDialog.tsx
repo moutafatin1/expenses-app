@@ -19,7 +19,7 @@ export const AddNewFormDialog = () => {
   const onSubmit: SubmitHandler<categoryFormData> = (data) => {
     addNewCategoryMutation.mutate(data, {
       onSuccess: () => {
-        utils.category.getCategories.invalidate();
+        utils.category.all.invalidate();
         setIsOpen(false);
       },
     });

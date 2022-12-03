@@ -3,7 +3,7 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
 export const categoryRouter = router({
-  getCategories: protectedProcedure.query(({ ctx }) => {
+  all: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.category.findMany();
   }),
   createNewCategory: protectedProcedure

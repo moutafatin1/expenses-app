@@ -13,7 +13,7 @@ export const DeleteCategory = ({ id }: DeleteCategoryProps) => {
   const deleteCategory = () => {
     deleteCategoryMutation.mutate(id, {
       onSuccess: () => {
-        utils.category.getCategories.invalidate();
+        utils.category.all.invalidate();
       },
     });
   };

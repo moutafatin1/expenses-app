@@ -1,7 +1,7 @@
 import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
+    Dialog,
+    DialogPanel,
+    DialogTitle
 } from "@modules/common/components/Elements/Dialog/Dialog";
 import type { Category } from "@prisma/client";
 import { trpc } from "@utils/trpc";
@@ -28,7 +28,7 @@ export const UpdateFormDialog = ({
       { ...data, id: category.id },
       {
         onSuccess: () => {
-          utils.category.getCategories.invalidate();
+          utils.category.all.invalidate();
           close();
         },
       }
