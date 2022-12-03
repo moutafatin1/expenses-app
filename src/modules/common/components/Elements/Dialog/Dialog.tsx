@@ -1,5 +1,5 @@
 import { Dialog as UIDialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 type DialogProps = {
   isOpen: boolean;
@@ -7,15 +7,14 @@ type DialogProps = {
   children: React.ReactNode;
 };
 
-export const DialogTitle = UIDialog.Title
-export const DialogPanel = UIDialog.Panel
+export const DialogTitle = UIDialog.Title;
+export const DialogPanel = UIDialog.Panel;
 
-export function Dialog({isOpen,onClose,children}:DialogProps) {
-
+export function Dialog({ isOpen, onClose, children }: DialogProps) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <UIDialog as="div" className="relative z-10" onClose={onClose}>
+        <UIDialog as="div" className="relative z-30" onClose={onClose}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
