@@ -11,13 +11,17 @@ export const categoryRouter = router({
         })
         .optional()
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const size = 5;
       const page = input?.page ?? 1;
-      return ctx.prisma.category.findMany({
+      const totalCategories = await ctx.prisma.category.count();
+      const totalPages = Math.ceil(totalCategories / size);
+      const hasMore = totalPages > page;
+      const categories = await ctx.prisma.category.findMany({
         take: size,
         skip: (page - 1) * size,
       });
+      return { categories, hasMore, totalRowCount: totalCategories,size };
     }),
   new: protectedProcedure
     .input(categoryFormSchema)

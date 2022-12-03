@@ -11,21 +11,15 @@ type CategoriesListProps = {
 export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   const [page, setPage] = useState(1);
   const utils = trpc.useContext();
-  const {
-    data: categories,
-    error,
-    isLoading,
-    isPreviousData,
-  } = trpc.category.all.useQuery(
+  const { data, error, isLoading, isPreviousData } = trpc.category.all.useQuery(
     { page: page },
     { keepPreviousData: true, staleTime: 5000 }
   );
-
   useEffect(() => {
-    if (!isPreviousData) {
+    if (!isPreviousData && data?.hasMore) {
       utils.category.all.prefetch({ page: page + 1 });
     }
-  }, [page, isPreviousData, utils]);
+  }, [page, isPreviousData, utils, data?.hasMore]);
   if (isLoading)
     return (
       <Spinner
@@ -35,6 +29,9 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
       />
     );
   if (error) return <p>{error.message}</p>;
+  const start = (page - 1) * data.size + 1;
+  const end = Math.min(page * data.size, data.totalRowCount);
+
   return (
     <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
       <table className="min-w-full divide-y divide-gray-300 ">
@@ -59,7 +56,7 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {categories.map((category) => (
+          {data.categories.map((category) => (
             <CategoryRow
               openUpdateDialog={openUpdateDialog}
               key={category.id}
@@ -75,24 +72,26 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
         <div className="hidden sm:block">
           <p className="text-sm text-gray-700">
             Showing
-            <span className="mx-1 font-medium">1</span>
+            <span className="mx-1 font-medium">{start}</span>
             to
-            <span className="mx-1 font-medium">10</span>
+            <span className="mx-1 font-medium">{end}</span>
             of
-            <span className="mx-1 font-medium">20</span>
+            <span className="mx-1 font-medium">{data.totalRowCount}</span>
             results
           </p>
         </div>
         <div className="flex flex-1 justify-between sm:justify-end">
           <button
+            disabled={page === 1}
             onClick={() => setPage((old) => Math.max(old - 1, 1))}
-            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:hover:bg-inherit"
           >
             Previous
           </button>
           <button
+            disabled={!data.hasMore}
             onClick={() => setPage((old) => old + 1)}
-            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:hover:bg-inherit"
           >
             Next
           </button>
