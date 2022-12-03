@@ -6,7 +6,7 @@ export const categoryRouter = router({
   all: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.category.findMany();
   }),
-  createNewCategory: protectedProcedure
+  new: protectedProcedure
     .input(categoryFormSchema)
     .mutation(({ ctx, input: { categoryName: name, emoji } }) => {
       return ctx.prisma.category.create({

@@ -15,7 +15,7 @@ export const AddNewFormDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const utils = trpc.useContext();
-  const addNewCategoryMutation = trpc.category.createNewCategory.useMutation();
+  const addNewCategoryMutation = trpc.category.new.useMutation();
   const onSubmit: SubmitHandler<categoryFormData> = (data) => {
     addNewCategoryMutation.mutate(data, {
       onSuccess: () => {
