@@ -1,4 +1,5 @@
 import { Spinner } from "@modules/common/components/Elements";
+import { InputField } from "@modules/common/components/Forms";
 import { Pagination } from "@modules/common/components/Pagination/Pagination";
 import type { Category } from "@prisma/client";
 import { useEffect, useState } from "react";
@@ -25,9 +26,10 @@ export const getPaginationMetadata = ({
 
 export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const utils = trpc.useContext();
   const { data, error, isLoading, isPreviousData } = trpc.category.all.useQuery(
-    { page: page },
+    { page: page, searchTerm: search },
     { keepPreviousData: true, staleTime: 5000 }
   );
   // prefetch next page
@@ -59,7 +61,13 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   };
 
   return (
-    <div className="-mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
+    <div className="relative -mx-4 mt-8 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
+      <InputField
+        className="absolute top-1 right-1 z-20 w-24 sm:w-36 lg:w-64"
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <table className="min-w-full divide-y divide-gray-300 ">
         <thead className="bg-gray-50">
           <tr>

@@ -8,6 +8,7 @@ export const categoryRouter = router({
       z
         .object({
           page: z.number().optional(),
+          searchTerm: z.string().optional(),
         })
         .optional()
     )
@@ -20,8 +21,13 @@ export const categoryRouter = router({
       const categories = await ctx.prisma.category.findMany({
         take: size,
         skip: (page - 1) * size,
+        where: {
+          name: {
+            contains: input?.searchTerm,
+          },
+        },
       });
-      return { categories, hasMore, totalRowCount: totalCategories,size };
+      return { categories, hasMore, totalRowCount: totalCategories, size };
     }),
   new: protectedProcedure
     .input(categoryFormSchema)
