@@ -1,35 +1,24 @@
 import { Spinner } from "@modules/common/components/Elements";
 import { InputField } from "@modules/common/components/Forms";
 import { Pagination } from "@modules/common/components/Pagination/Pagination";
+import { useDebounce } from "@modules/common/hooks";
+import { getPaginationMetadata } from "@modules/common/utils";
 import type { Category } from "@prisma/client";
+import { trpc } from "@utils/trpc";
 import { useEffect, useState } from "react";
-import { trpc } from "src/utils/trpc";
 import { CategoryRow } from "./CategoryRow";
 
 type CategoriesListProps = {
   openUpdateDialog: (category: Category) => void;
 };
 
-export const getPaginationMetadata = ({
-  limit,
-  total,
-  page,
-}: {
-  limit: number;
-  total: number;
-  page: number;
-}) => {
-  const startIndex = (page - 1) * limit + 1;
-  const endIndex = Math.min(page * limit, total);
-  return { startIndex, endIndex };
-};
-
 export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const debouncedSearchTerm = useDebounce(search, 500);
   const utils = trpc.useContext();
   const { data, error, isLoading, isPreviousData } = trpc.category.all.useQuery(
-    { page: page, searchTerm: search },
+    { page: page, searchTerm: debouncedSearchTerm },
     { keepPreviousData: true, staleTime: 5000 }
   );
   // prefetch next page
