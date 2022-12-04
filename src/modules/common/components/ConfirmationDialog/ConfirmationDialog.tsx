@@ -1,8 +1,8 @@
 import { fn } from "@utils/fn";
-import { useCallback, useEffect, useState } from "react";
 import { HiExclamationCircle, HiInformationCircle } from "react-icons/hi";
 import Button from "../Elements/Button/Button";
 import { Dialog, DialogPanel, DialogTitle } from "../Elements/Dialog/Dialog";
+import { useConfirmationDialog } from "./hooks";
 
 export type ConfirmationDialogProps = {
   triggerButton: (open: () => void) => React.ReactElement;
@@ -23,18 +23,7 @@ export const ConfirmationDialog = ({
   icon = "danger",
   isDone = false,
 }: ConfirmationDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const close = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
-  const open = useCallback(() => {
-    setIsOpen(true);
-  }, [setIsOpen]);
-  useEffect(() => {
-    if (isDone) {
-      close();
-    }
-  }, [isDone, close]);
+  const { close, isOpen, open } = useConfirmationDialog(isDone);
   return (
     <>
       {triggerButton(open)}
