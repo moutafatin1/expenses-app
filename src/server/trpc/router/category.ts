@@ -9,6 +9,7 @@ export const categoryRouter = router({
         .object({
           page: z.number().optional(),
           searchTerm: z.string().optional(),
+          sort: z.union([z.literal("usage"), z.literal("new")]).optional(),
         })
         .optional()
     )
@@ -25,6 +26,14 @@ export const categoryRouter = router({
           name: {
             contains: input?.searchTerm,
           },
+        },
+        orderBy: {
+          createdAt: input?.sort === "new" ? "desc" : undefined,
+          ...(input?.sort === "usage" && {
+            Transaction: {
+              _count: "desc",
+            },
+          }),
         },
       });
       return { categories, hasMore, totalRowCount: totalCategories, size };

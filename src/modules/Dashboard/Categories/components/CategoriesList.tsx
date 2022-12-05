@@ -1,10 +1,12 @@
 import { Spinner } from "@modules/common/components/Elements";
+import { Menu } from "@modules/common/components/Elements/Menu/Menu";
 import { InputField } from "@modules/common/components/Forms";
 import { Pagination } from "@modules/common/components/Pagination/Pagination";
 import { useDebounce } from "@modules/common/hooks";
 import { getPaginationMetadata } from "@modules/common/utils";
 import type { Category } from "@prisma/client";
 import { trpc } from "@utils/trpc";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CategoryRow } from "./CategoryRow";
@@ -14,12 +16,17 @@ type CategoriesListProps = {
 };
 
 export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const debouncedSearchTerm = useDebounce(search, 500);
   const utils = trpc.useContext();
   const { data, error, isLoading, isPreviousData } = trpc.category.all.useQuery(
-    { page: page, searchTerm: debouncedSearchTerm },
+    {
+      page: page,
+      searchTerm: debouncedSearchTerm,
+      sort: (router.query["sort"] as "usage" | "new" | undefined) ?? undefined,
+    },
     { keepPreviousData: true, staleTime: 5000 }
   );
   // prefetch next page
@@ -52,14 +59,17 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
 
   return (
     <>
-      <InputField
-        className="w-24 sm:w-36 lg:w-64"
-        placeholder="Search..."
-        label="Search"
-        value={search}
-        startIcon={<AiOutlineSearch />}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="flex items-center justify-between">
+        <InputField
+          className="w-24 sm:w-36 lg:w-64"
+          placeholder="Search..."
+          label="Search"
+          value={search}
+          startIcon={<AiOutlineSearch />}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Menu />
+      </div>
       <div className="-mx-4 mt-4 overflow-hidden rounded-xl  shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 ">
         <table className="min-w-full divide-y divide-gray-300 ">
           <thead className="bg-gray-50">
