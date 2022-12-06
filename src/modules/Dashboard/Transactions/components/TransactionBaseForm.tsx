@@ -87,6 +87,7 @@ export const TransactionBaseForm = ({
         placeholder="Transaction amount"
         onChange={handleInputChange}
         value={transactionForm.amount}
+        required
       />
       <div className="flex items-center gap-4">
         <Button type="submit" className="ml-auto w-28">
