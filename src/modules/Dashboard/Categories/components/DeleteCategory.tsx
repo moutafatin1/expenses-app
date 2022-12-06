@@ -23,7 +23,7 @@ export const DeleteCategory = ({ id }: DeleteCategoryProps) => {
       icon="danger"
       title="Are you sure to delete this category?"
       body="Deleting this category will delete all the transactions associated with it."
-      triggerButton={(open: () => void) => (
+      triggerButton={(open) => (
         <button
           onClick={open}
           className="rounded-full bg-red-400 p-2 text-xl text-white transition-opacity hover:opacity-75"
