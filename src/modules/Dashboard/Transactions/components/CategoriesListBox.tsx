@@ -2,16 +2,23 @@ import { Listbox, Transition } from "@headlessui/react";
 import { Spinner } from "@modules/common/components/Elements";
 import type { Category } from "@prisma/client";
 import { trpc } from "@utils/trpc";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { HiCheck, HiSelector } from "react-icons/hi";
 
-export const CategoriesListBox = () => {
-  const [selected, setSelected] = useState<Category>();
+type CategoriesListBoxProps = {
+  category: Partial<Category>;
+  setCategory: (category?: Category) => void;
+};
+
+export const CategoriesListBox = ({
+  setCategory,
+  category,
+}: CategoriesListBoxProps) => {
   const { data, error, isLoading } = trpc.category.all.useQuery(
     {},
     {
       onSuccess(data) {
-        setSelected(data.categories[0]);
+        setCategory(data.categories[0]);
       },
     }
   );
@@ -26,7 +33,7 @@ export const CategoriesListBox = () => {
     );
   if (error) return <p>{error.message}</p>;
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={category} onChange={setCategory} name="category">
       <div className="relative z-10 mt-1">
         <label className="text-sm font-medium capitalize text-gray-700">
           Category
@@ -34,7 +41,7 @@ export const CategoriesListBox = () => {
 
         <Listbox.Button className="relative mt-1 w-full cursor-default rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-left text-gray-800 focus:outline-none focus-visible:border-violet-500 focus-visible:ring-1 focus-visible:ring-violet-500 focus-visible:ring-opacity-75  focus-visible:ring-offset-violet-300 sm:text-sm">
           <span className="block truncate text-base text-gray-800">
-            {selected?.emoji} {selected?.name}
+            {category.emoji} {category.name}
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <HiSelector className="h-5 w-5 text-gray-400" aria-hidden="true" />

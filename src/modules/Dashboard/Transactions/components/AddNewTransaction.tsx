@@ -4,16 +4,32 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@modules/common/components/Elements/Dialog/Dialog";
+import { trpc } from "@utils/trpc";
 import { useState } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import type { TransactionFormData } from "../transactionSchema";
+import type { TransactionFormData } from "./TransactionBaseForm";
 import { TransactionBaseForm } from "./TransactionBaseForm";
 
 export const AddNewTransaction = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const utils = trpc.useContext();
 
-  const onSubmit: SubmitHandler<TransactionFormData> = (data) => {
-    console.log(data);
+  const addNewTransactionMutation = trpc.transactions.new.useMutation();
+
+  const onSubmit = (data: TransactionFormData) => {
+    addNewTransactionMutation.mutate(
+      {
+        amount: data.amount,
+        type: data.type as "expense" | "income",
+        categoryId: data.category.id!,
+      },
+      {
+        onSuccess: () => {
+          utils.transactions.all.invalidate();
+        },
+      }
+    );
+
+    setIsOpen(false);
   };
 
   return (
