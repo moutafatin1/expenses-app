@@ -1,6 +1,8 @@
 import { SidebarLayout } from "@modules/common/Layouts/SidebarLayout";
 import { AddNewTransaction } from "@modules/Dashboard/Transactions/components/AddNewTransaction";
 import { TransactionsList } from "@modules/Dashboard/Transactions/components/TransactionsList";
+import { getServerAuthSession } from "@server/common/get-server-auth-session";
+import type { GetServerSideProps } from "next";
 import type { ReactElement } from "react";
 
 const TransactionsPage = () => {
@@ -16,4 +18,21 @@ export default TransactionsPage;
 
 TransactionsPage.getLayout = (page: ReactElement) => {
   return <SidebarLayout>{page}</SidebarLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
 };

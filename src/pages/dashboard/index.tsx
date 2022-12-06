@@ -3,6 +3,8 @@ import { LineChart } from "@modules/Dashboard/Charts/LineChart";
 import { PieChart } from "@modules/Dashboard/Charts/PieChart";
 import { LatestTransactions } from "@modules/Dashboard/Home/components/LatestTransactions";
 import { UserStats } from "@modules/Dashboard/Home/components/UserStats";
+import { getServerAuthSession } from "@server/common/get-server-auth-session";
+import type { GetServerSideProps } from "next";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
 
@@ -27,4 +29,21 @@ export default DashboardPage;
 
 DashboardPage.getLayout = (page: ReactElement) => {
   return <SidebarLayout>{page}</SidebarLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
 };
