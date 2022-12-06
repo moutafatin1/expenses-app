@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
 export const transactionsRouter = router({
@@ -82,6 +83,30 @@ export const transactionsRouter = router({
       take: 5,
     });
   }),
+  all: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.transaction.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+            emoji: true,
+          },
+        },
+      },
+    });
+  }),
+  deleteById: protectedProcedure
+    .input(z.string())
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.transaction.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
 });
 
 type LineChartData = {
