@@ -20,7 +20,7 @@ export const AddNewTransaction = () => {
       {
         amount: data.amount,
         type: data.type as "expense" | "income",
-        categoryId: data.category.id!,
+        categoryId: data.category.id,
       },
       {
         onSuccess: () => {

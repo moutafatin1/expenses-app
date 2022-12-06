@@ -109,7 +109,7 @@ export const transactionsRouter = router({
     }),
   new: protectedProcedure.input(
     z.object({
-      categoryId: z.string(),
+      categoryId: z.string().optional(),
       type: z.union([z.literal("expense"), z.literal("income")]),
       amount: z.string(),
     })
