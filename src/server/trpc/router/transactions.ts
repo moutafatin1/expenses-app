@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
@@ -107,22 +108,36 @@ export const transactionsRouter = router({
         },
       });
     }),
-  new: protectedProcedure.input(
-    z.object({
-      categoryId: z.string().optional(),
-      type: z.union([z.literal("expense"), z.literal("income")]),
-      amount: z.string(),
-    })
-  ).mutation(({ctx,input})=> {
-    return ctx.prisma.transaction.create({
-      data : {
-        userId : ctx.session.user.id,
-        categoryId : input.categoryId,
-        type: input.type,
-        amount : parseFloat(input.amount)
+  new: protectedProcedure
+    .input(
+      z.object({
+        categoryId: z.string().optional(),
+        type: z.union([z.literal("expense"), z.literal("income")]),
+        amount: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const category = await ctx.prisma.category.findUnique({
+        where: {
+          id: input.categoryId,
+        },
+      });
+
+      if (!category || !input.categoryId) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Category not found",
+        });
       }
-    })
-  }),
+      return ctx.prisma.transaction.create({
+        data: {
+          userId: ctx.session.user.id,
+          categoryId: input.categoryId,
+          type: input.type,
+          amount: parseFloat(input.amount),
+        },
+      });
+    }),
 });
 
 type LineChartData = {
