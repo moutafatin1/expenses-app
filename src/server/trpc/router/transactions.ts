@@ -147,8 +147,3 @@ type LineChartData = {
     y: number;
   }>;
 };
-
-function subtractWeeks(numOfWeeks: number, date = new Date()) {
-  const lastWeek = date.setDate(date.getDate() - numOfWeeks * 7);
-  return new Date(lastWeek);
-}
