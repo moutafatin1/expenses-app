@@ -1,9 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { fn } from "@utils/fn";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import React, { Fragment } from "react";
+import { AiOutlineLogout } from "react-icons/ai";
 import { TransitionOpacity } from "../animations/TransitionOpacity";
 import { sidebarNavigation } from "./navigationData";
 
@@ -120,6 +122,12 @@ Sidebar.Footer = function footer({
         <span className="font-medium text-white">{user.username}</span>
         <span className="text-gray-300">View Profile</span>
       </div>
+      <button
+        onClick={() => signOut()}
+        className="ml-auto rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
+      >
+        <AiOutlineLogout className="text-4xl text-red-400 transition-colors hover:text-red-500" />
+      </button>
     </div>
   );
 };
