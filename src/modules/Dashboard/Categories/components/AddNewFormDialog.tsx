@@ -11,7 +11,6 @@ import type { categoryFormData } from "../categorySchema";
 import { CategoryBaseForm } from "./CategoryBaseForm";
 
 export const AddNewFormDialog = () => {
-  // const { openAddForm, closeForm, isAddMode } = useCategoryFormContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const utils = trpc.useContext();
