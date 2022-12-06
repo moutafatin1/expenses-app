@@ -23,16 +23,11 @@ export const TransactionBaseForm = ({
   mode,
   closeDialog,
 }: TransactionBaseFormProps) => {
-  // const { isAddMode, closeForm } = useCategoryFormContext();
   const [transactionForm, setTransactionForm] = useState({
     category: {} as Partial<Category>,
     type: "expense",
     amount: "",
   });
-  console.log(
-    "🚀 ~ file: TransactionBaseForm.tsx:27 ~ transactionForm",
-    transactionForm
-  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTransactionForm((old) => ({ ...old, [e.target.name]: e.target.value }));
