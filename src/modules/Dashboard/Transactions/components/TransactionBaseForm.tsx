@@ -26,7 +26,7 @@ export const TransactionBaseForm = ({
   // const { isAddMode, closeForm } = useCategoryFormContext();
   const [transactionForm, setTransactionForm] = useState({
     category: {} as Partial<Category>,
-    type: "income",
+    type: "expense",
     amount: "",
   });
   console.log(
