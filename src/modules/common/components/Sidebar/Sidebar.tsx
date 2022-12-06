@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { fn } from "@utils/fn";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
@@ -36,7 +37,7 @@ export function Sidebar({ isOpen, closeSidebar, user }: SidebarProps) {
             >
               <Sidebar.Header />
               <Sidebar.Nav />
-              <Sidebar.Footer user={user} />
+              <Sidebar.Footer />
             </Dialog.Panel>
           </TransitionOpacity>
         </Dialog>
@@ -46,7 +47,7 @@ export function Sidebar({ isOpen, closeSidebar, user }: SidebarProps) {
       <div className="inset-y-0 hidden  flex-1  flex-col bg-gray-800 pt-5 md:fixed  md:flex md:w-72">
         <Sidebar.Header />
         <Sidebar.Nav />
-        <Sidebar.Footer user={user} />
+        <Sidebar.Footer />
       </div>
     </>
   );
@@ -100,26 +101,21 @@ Sidebar.NavItem = function NavItem({ children, href, icon }: NavItemProps) {
   );
 };
 
-Sidebar.Footer = function footer({
-  user = {
-    id: "ccc",
-    username: "default",
-  },
-}: {
-  user?: {
-    id: string;
-    username: string;
-  };
-}) {
+Sidebar.Footer = function Footer() {
+  const { data } = useSession();
   return (
     <div className="flex items-center gap-2 bg-gray-700 p-4">
-      <img
-        className="h-14 w-14 rounded-full"
-        src="https://www.w3schools.com/howto/img_avatar.png"
-        alt="avatar"
+      <Image
+        src={data?.user?.image ?? ""}
+        className="rounded-full"
+        width={60}
+        height={60}
+        alt={data?.user?.name ?? ""}
       />
       <div className="flex flex-col">
-        <span className="font-medium text-white">{user.username}</span>
+        <span className="truncate font-medium text-white">
+          {data?.user?.name}
+        </span>
         <span className="text-gray-300">View Profile</span>
       </div>
       <button
