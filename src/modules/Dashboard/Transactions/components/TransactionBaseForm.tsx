@@ -2,7 +2,7 @@ import Button from "@modules/common/components/Elements/Button/Button";
 import { InputField } from "@modules/common/components/Forms";
 import type { Category } from "@prisma/client";
 import type { ChangeEvent, FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CategoriesListBox } from "./CategoriesListBox";
 
 type TransactionBaseFormProps = {
@@ -16,12 +16,14 @@ export type TransactionFormData = {
   category: Partial<Category>;
   type: string;
   amount: string;
+  id?: string;
 };
 
 export const TransactionBaseForm = ({
   onSubmit,
   mode,
   closeDialog,
+  defaultValues,
 }: TransactionBaseFormProps) => {
   const [transactionForm, setTransactionForm] = useState({
     category: {} as Partial<Category>,
@@ -41,13 +43,20 @@ export const TransactionBaseForm = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(transactionForm);
+    onSubmit({ ...transactionForm, id: defaultValues?.id });
   };
+
+  useEffect(() => {
+    setTransactionForm((old) =>
+      defaultValues?.amount ? { ...old, amount: defaultValues.amount } : old
+    );
+  }, [defaultValues]);
   return (
     <form onSubmit={handleSubmit} className=" flex  flex-col gap-4">
       <CategoriesListBox
         category={transactionForm.category}
         setCategory={setCategory}
+        defaultCategory={defaultValues?.category as Category}
       />
       <div className="space-y-2">
         <label className="font-medium capitalize text-gray-700">Type</label>
@@ -58,7 +67,7 @@ export const TransactionBaseForm = ({
             value="expense"
             onChange={handleInputChange}
             className="h-5 w-5 text-violet-500 focus:ring-violet-500"
-            checked={transactionForm.type === "expense"}
+            defaultChecked={defaultValues?.type === "expense" || true}
           />
           <span className="font-medium capitalize text-gray-700">expense</span>
         </label>
@@ -69,7 +78,7 @@ export const TransactionBaseForm = ({
             onChange={handleInputChange}
             value="income"
             className="h-5 w-5 text-violet-500 focus:ring-violet-500"
-            checked={transactionForm.type === "income"}
+            defaultChecked={defaultValues?.type === "income"}
           />
           <span className="font-medium capitalize text-gray-700">Income</span>
         </label>
@@ -78,7 +87,6 @@ export const TransactionBaseForm = ({
         label="Amount"
         name="amount"
         type="number"
-        //   errorMessage={errors?.emoji?.message}
         placeholder="Transaction amount"
         onChange={handleInputChange}
         value={transactionForm.amount}
