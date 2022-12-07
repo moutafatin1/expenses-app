@@ -7,6 +7,7 @@ export const categoryRouter = router({
     .input(
       z
         .object({
+          size: z.number().optional(),
           page: z.number().optional(),
           searchTerm: z.string().optional(),
           sort: z.union([z.literal("usage"), z.literal("new")]).optional(),
@@ -20,7 +21,7 @@ export const categoryRouter = router({
       const totalPages = Math.ceil(totalCategories / size);
       const hasMore = totalPages > page;
       const categories = await ctx.prisma.category.findMany({
-        take: size,
+        ...(input?.size && { take: input.size }),
         skip: (page - 1) * size,
         where: {
           name: {
