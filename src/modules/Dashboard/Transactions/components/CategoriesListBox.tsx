@@ -8,20 +8,19 @@ import { HiCheck, HiSelector } from "react-icons/hi";
 type CategoriesListBoxProps = {
   category: Partial<Category>;
   setCategory: (category?: Category) => void;
+  defaultCategory?: Category;
 };
 
 export const CategoriesListBox = ({
   setCategory,
   category,
+  defaultCategory,
 }: CategoriesListBoxProps) => {
-  const { data, error, isLoading } = trpc.category.all.useQuery(
-    {},
-    {
-      onSuccess(data) {
-        setCategory(data.categories[0]);
-      },
-    }
-  );
+  const { data, error, isLoading } = trpc.category.all.useQuery(undefined, {
+    onSuccess(data) {
+      setCategory(defaultCategory ? defaultCategory : data.categories[0]);
+    },
+  });
 
   if (isLoading)
     return (
