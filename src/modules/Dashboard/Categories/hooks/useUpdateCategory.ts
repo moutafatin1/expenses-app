@@ -18,3 +18,22 @@ export const useUpdateCategory = () => {
     updateDialogIsOpen,
   };
 };
+
+export const useUpdateDialog =<T> () => {
+  const [dataToUpdate, setDataToUpdate] = useState<T>();
+  const closeUpdateDialog = () => {
+    setDataToUpdate(undefined);
+  };
+  const openUpdateDialog = (data: T) => {
+    setDataToUpdate(data);
+  };
+  const updateDialogIsOpen = dataToUpdate !== undefined;
+
+  return {
+    dataToUpdate,
+    closeUpdateDialog,
+    openUpdateDialog,
+    updateDialogIsOpen,
+  };
+};
+
