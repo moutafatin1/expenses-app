@@ -23,6 +23,7 @@ export const CategoriesList = ({ openUpdateDialog }: CategoriesListProps) => {
   const utils = trpc.useContext();
   const { data, error, isLoading, isPreviousData } = trpc.category.all.useQuery(
     {
+      size: 5,
       page: page,
       searchTerm: debouncedSearchTerm,
       sort: (router.query["sort"] as "usage" | "new" | undefined) ?? undefined,
