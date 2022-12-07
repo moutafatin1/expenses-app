@@ -94,6 +94,7 @@ export const transactionsRouter = router({
           select: {
             name: true,
             emoji: true,
+            id: true,
           },
         },
       },
@@ -135,6 +136,26 @@ export const transactionsRouter = router({
           categoryId: input.categoryId,
           type: input.type,
           amount: parseFloat(input.amount),
+        },
+      });
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        transactionId: z.string(),
+        type: z.union([z.literal("expense"), z.literal("income")]),
+        amount: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.transaction.update({
+        data: {
+          amount: parseFloat(input.amount),
+          type: input.type,
+        },
+        where: {
+          id: input.transactionId,
+
         },
       });
     }),
