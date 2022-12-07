@@ -1,8 +1,15 @@
 import { Spinner } from "@modules/common/components/Elements";
 import { trpc } from "@utils/trpc";
+import type { TransactionFormData } from "./TransactionBaseForm";
 import { TransactionRow } from "./TransactionRow";
 
-export const TransactionsList = () => {
+type TransactionsListProps = {
+  openUpdateDialog: (data: TransactionFormData) => void;
+};
+
+export const TransactionsList = ({
+  openUpdateDialog,
+}: TransactionsListProps) => {
   const { data, error, isLoading } = trpc.transactions.all.useQuery();
 
   if (isLoading)
@@ -45,7 +52,11 @@ export const TransactionsList = () => {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {data.map((transaction) => (
-            <TransactionRow key={transaction.id} transaction={transaction} />
+            <TransactionRow
+              openUpdateDialog={openUpdateDialog}
+              key={transaction.id}
+              transaction={transaction}
+            />
           ))}
         </tbody>
       </table>

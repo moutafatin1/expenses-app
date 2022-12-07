@@ -4,7 +4,7 @@ import { AddNewFormDialog } from "@modules/Dashboard/Categories/components/AddNe
 import { UpdateFormDialog } from "@modules/Dashboard/Categories/components/UpdateFormDialog";
 import { useUpdateCategory } from "@modules/Dashboard/Categories/hooks/useUpdateCategory";
 import { getServerAuthSession } from "@server/common/get-server-auth-session";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import type { ReactElement } from "react";
 
 const CategoriesPage = () => {
@@ -32,7 +32,6 @@ export default CategoriesPage;
 CategoriesPage.getLayout = (page: ReactElement) => {
   return <SidebarLayout>{page}</SidebarLayout>;
 };
-
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);
